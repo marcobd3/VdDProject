@@ -1,7 +1,11 @@
 {
   "meta": {
     "actualizado": "2026-10-08",
-    "nota": "Datos recopilados de fuentes públicas. Cada bloque indica sus fuentes (ids de fuentes.json). Cuando las fuentes no coinciden, se indica."
+    "nota": {
+      "gl": "Datos recompilados de fontes públicas. Cada bloque indica as súas fontes (ids de fuentes.json). Cando as fontes non coinciden, indícase. Os textos traducidos levan unha clave por idioma (gl, es, en).",
+      "es": "Datos recopilados de fuentes públicas. Cada bloque indica sus fuentes (ids de fuentes.json). Cuando las fuentes no coinciden, se indica. Los textos traducidos llevan una clave por idioma (gl, es, en).",
+      "en": "Data compiled from public sources. Each block lists its sources (ids from fuentes.json). Where sources disagree, this is noted. Translated texts carry one key per language (gl, es, en)."
+    }
   },
   "ficha": {
     "nombre": "Val do Dubra",
@@ -14,19 +18,30 @@
     "parroquias": 12,
     "superficieKm2": 108.64,
     "superficieAlternativas": [
-      { "valor": 109.02, "fuente": "wikipedia-en" },
-      { "valor": 108.7, "fuente": "egu" }
+      {"valor": 109.02, "fuente": "wikipedia-en"},
+      {"valor": 108.7, "fuente": "egu"}
     ],
     "poblacion": 3680,
     "poblacionFecha": "2025-01-01",
     "densidad": 33.9,
-    "coordenadas": { "lat": 43.0225, "lon": -8.6383 },
+    "coordenadas": {
+      "lat": 43.0225,
+      "lon": -8.6383
+    },
     "altitudValles": 250,
     "altitudMaxima": 564,
-    "altitudMaximaNombre": "Cumbres do Castelo",
+    "altitudMaximaNombre": {
+      "gl": "Cumios do Castelo",
+      "es": "Cumbres do Castelo",
+      "en": "Castelo summits"
+    },
     "limites": ["Tordoia", "Trazo", "Santiago de Compostela", "Ames", "A Baña", "Santa Comba"],
     "distanciaSantiagoKm": 17.5,
-    "distanciaNota": "En línea recta desde Bembibre hasta la praza do Obradoiro (cálculo propio con coordenadas).",
+    "distanciaNota": {
+      "gl": "En liña recta dende Bembibre ata a praza do Obradoiro (cálculo propio con coordenadas).",
+      "es": "En línea recta desde Bembibre hasta la praza do Obradoiro (cálculo propio con coordenadas).",
+      "en": "As the crow flies from Bembibre to Praza do Obradoiro (own calculation from coordinates)."
+    },
     "codigosPostales": ["15873", "15874"],
     "alcalde": "Diego Luis Díaz Méndez",
     "alcaldePartido": "PSdeG-PSOE",
@@ -34,35 +49,35 @@
   },
   "poblacion": {
     "historica": [
-      { "anio": 1887, "valor": 4634, "fuente": "egu" },
-      { "anio": 1900, "valor": 4409, "fuente": "foro-ciudad" },
-      { "anio": 1950, "valor": 6900, "fuente": "egu", "nota": "Máximo histórico" },
-      { "anio": 1981, "valor": 5654, "fuente": "foro-ciudad", "nota": "City Population da 7.035 para el censo de 1981; usamos la serie coherente con la EGU." },
-      { "anio": 1991, "valor": 5351, "fuente": "citypopulation" },
-      { "anio": 2001, "valor": 4765, "fuente": "citypopulation" },
-      { "anio": 2011, "valor": 4221, "fuente": "citypopulation" },
-      { "anio": 2021, "valor": 3845, "fuente": "citypopulation" },
-      { "anio": 2025, "valor": 3680, "fuente": "ine-padron" }
+      {"anio": 1887, "valor": 4634, "fuente": "egu"},
+      {"anio": 1900, "valor": 4409, "fuente": "foro-ciudad"},
+      {"anio": 1950, "valor": 6900, "fuente": "egu", "nota": {"gl": "Máximo histórico", "es": "Máximo histórico", "en": "All-time high"}},
+      {"anio": 1981, "valor": 5654, "fuente": "foro-ciudad", "nota": {"gl": "City Population dá 7.035 para o censo de 1981; usamos a serie coherente coa EGU.", "es": "City Population da 7.035 para el censo de 1981; usamos la serie coherente con la EGU.", "en": "City Population gives 7,035 for the 1981 census; we use the series consistent with the EGU."}},
+      {"anio": 1991, "valor": 5351, "fuente": "citypopulation"},
+      {"anio": 2001, "valor": 4765, "fuente": "citypopulation"},
+      {"anio": 2011, "valor": 4221, "fuente": "citypopulation"},
+      {"anio": 2021, "valor": 3845, "fuente": "citypopulation"},
+      {"anio": 2025, "valor": 3680, "fuente": "ine-padron"}
     ],
     "padron": [
-      { "anio": 2000, "valor": 4892 },
-      { "anio": 2001, "valor": 4874 },
-      { "anio": 2007, "valor": 4515 },
-      { "anio": 2010, "valor": 4386 },
-      { "anio": 2015, "valor": 4033 },
-      { "anio": 2020, "valor": 3851 },
-      { "anio": 2022, "valor": 3783 },
-      { "anio": 2023, "valor": 3761 },
-      { "anio": 2024, "valor": 3734 },
-      { "anio": 2025, "valor": 3680 }
+      {"anio": 2000, "valor": 4892},
+      {"anio": 2001, "valor": 4874},
+      {"anio": 2007, "valor": 4515},
+      {"anio": 2010, "valor": 4386},
+      {"anio": 2015, "valor": 4033},
+      {"anio": 2020, "valor": 3851},
+      {"anio": 2022, "valor": 3783},
+      {"anio": 2023, "valor": 3761},
+      {"anio": 2024, "valor": 3734},
+      {"anio": 2025, "valor": 3680}
     ],
     "padronFuentes": ["foro-ciudad", "ine-padron", "egu", "citypopulation"],
     "tendencias": [
-      { "periodo": "hasta 1900", "tasaAnual": -0.37, "causa": "Emigración a América" },
-      { "periodo": "1900-1950", "tasaAnual": null, "causa": "Crecimiento sostenido" },
-      { "periodo": "1950-1970", "tasaAnual": -1.07, "causa": "Emigración a Europa" },
-      { "periodo": "1970-1981", "tasaAnual": 0.39, "causa": "Retorno de emigrantes tras la crisis de 1973" },
-      { "periodo": "desde 1981", "tasaAnual": -0.79, "causa": "Envejecimiento y saldo natural negativo" }
+      {"periodo": {"gl": "ata 1900", "es": "hasta 1900", "en": "until 1900"}, "tasaAnual": -0.37, "causa": {"gl": "Emigración a América", "es": "Emigración a América", "en": "Emigration to the Americas"}},
+      {"periodo": "1900-1950", "tasaAnual": null, "causa": {"gl": "Crecemento sostido", "es": "Crecimiento sostenido", "en": "Steady growth"}},
+      {"periodo": "1950-1970", "tasaAnual": -1.07, "causa": {"gl": "Emigración a Europa", "es": "Emigración a Europa", "en": "Emigration to Europe"}},
+      {"periodo": "1970-1981", "tasaAnual": 0.39, "causa": {"gl": "Retorno de emigrantes tras a crise de 1973", "es": "Retorno de emigrantes tras la crisis de 1973", "en": "Emigrants return after the 1973 crisis"}},
+      {"periodo": {"gl": "dende 1981", "es": "desde 1981", "en": "since 1981"}, "tasaAnual": -0.79, "causa": {"gl": "Envellecemento e saldo natural negativo", "es": "Envejecimiento y saldo natural negativo", "en": "Ageing and more deaths than births"}}
     ],
     "tendenciasFuentes": ["egu"],
     "estructura": {
@@ -70,14 +85,18 @@
       "hombres": 1812,
       "mujeres": 1939,
       "edades": [
-        { "grupo": "0-14 años", "valor": 360 },
-        { "grupo": "15-64 años", "valor": 2059 },
-        { "grupo": "65 años o más", "valor": 1332 }
+        {"grupo": {"gl": "0-14 anos", "es": "0-14 años", "en": "0-14 years"}, "valor": 360},
+        {"grupo": {"gl": "15-64 anos", "es": "15-64 años", "en": "15-64 years"}, "valor": 2059},
+        {"grupo": {"gl": "65 anos ou máis", "es": "65 años o más", "en": "65 and over"}, "valor": 1332}
       ],
       "edadMedia": 52.37,
       "indiceEnvejecimiento": 278.08,
       "extranjeros": 112,
-      "nota": "Datos de la ficha municipal del IGE (población de referencia del INE).",
+      "nota": {
+        "gl": "Datos da ficha municipal do IGE (poboación de referencia do INE).",
+        "es": "Datos de la ficha municipal del IGE (población de referencia del INE).",
+        "en": "Figures from the IGE municipal profile (INE reference population)."
+      },
       "fuentes": ["ige-ficha"]
     },
     "movimientoNatural": {
@@ -90,7 +109,12 @@
       "hijosPorMujer2023": 1.16,
       "fuentes": ["ige-ficha"]
     },
-    "censo2021": { "total": 3845, "mujeres": 1999, "hombres": 1846, "fuentes": ["telencuestas-censo-2021", "citypopulation"] },
+    "censo2021": {
+      "total": 3845,
+      "mujeres": 1999,
+      "hombres": 1846,
+      "fuentes": ["telencuestas-censo-2021", "citypopulation"]
+    },
     "censoElectoral": {
       "fecha": "2026-01-01",
       "total": 5654,
@@ -101,98 +125,133 @@
       "fuentes": ["telencuestas-censo-electoral"]
     },
     "nucleos": [
-      { "nombre": "Bembibre", "tipo": "Capital", "serie": [ { "anio": 2010, "valor": 985 }, { "anio": 2015, "valor": 1018 }, { "anio": 2020, "valor": 1080 }, { "anio": 2023, "valor": 1142 }, { "anio": 2024, "valor": 1170 } ] },
-      { "nombre": "Portomouro de Abaixo", "tipo": "Localidad", "serie": [ { "anio": 2010, "valor": 228 }, { "anio": 2015, "valor": 213 }, { "anio": 2020, "valor": 208 }, { "anio": 2023, "valor": 200 } ] }
+      {"nombre": "Bembibre", "tipo": "Capital", "serie": [{"anio": 2010, "valor": 985}, {"anio": 2015, "valor": 1018}, {"anio": 2020, "valor": 1080}, {"anio": 2023, "valor": 1142}, {"anio": 2024, "valor": 1170}]},
+      {"nombre": "Portomouro de Abaixo", "tipo": {"gl": "Localidade", "es": "Localidad", "en": "Locality"}, "serie": [{"anio": 2010, "valor": 228}, {"anio": 2015, "valor": 213}, {"anio": 2020, "valor": 208}, {"anio": 2023, "valor": 200}]}
     ],
     "nucleosFuentes": ["citypopulation-loc", "citypopulation-bembibre"]
   },
   "parroquias": [
-    { "nombre": "Arabexo", "advocacion": null, "destacado": "Parroquia rural del valle" },
-    { "nombre": "Bembibre", "advocacion": "San Salvador", "destacado": "Capital municipal, Campo da Feira, área recreativa y Fervenza do Rexedoiro" },
-    { "nombre": "Buxán", "advocacion": "Santiago", "destacado": "Primera sede del ayuntamiento (1836), que se llamó Buján" },
-    { "nombre": "Coucieiro", "advocacion": "San Martiño", "destacado": "Iglesia parroquial catalogada por Turismo de Galicia" },
-    { "nombre": "Erbiñou", "advocacion": null, "destacado": "Parroquia rural del valle" },
-    { "nombre": "Niveiro", "advocacion": "San Vicente", "destacado": "Iglesia parroquial catalogada por Turismo de Galicia" },
-    { "nombre": "Páramos", "advocacion": "Santa María", "destacado": "Iglesia de románico rural gallego" },
-    { "nombre": "Portomeiro", "advocacion": "San Cosme", "destacado": "Castelo de Portomeiro, sobre un castro del siglo II a. C." },
-    { "nombre": "Portomouro", "advocacion": "San Cristovo", "destacado": "Puente medieval sobre el Tambre y ruinas de la capilla de Novais" },
-    { "nombre": "Rial", "advocacion": "San Vicente", "destacado": "Iglesia parroquial catalogada por Turismo de Galicia" },
-    { "nombre": "San Román", "advocacion": "San Román", "destacado": "Punto de partida de la ruta a la Pedra do Home" },
-    { "nombre": "Vilariño", "advocacion": null, "destacado": "Parroquia rural del valle" }
+    {"nombre": "Arabexo", "advocacion": null, "destacado": {"gl": "Parroquia rural do val", "es": "Parroquia rural del valle", "en": "Rural parish in the valley"}},
+    {"nombre": "Bembibre", "advocacion": "San Salvador", "destacado": {"gl": "Capital municipal, Campo da Feira, área recreativa e Fervenza do Rexedoiro", "es": "Capital municipal, Campo da Feira, área recreativa y Fervenza do Rexedoiro", "en": "Municipal seat, Campo da Feira, picnic area and the Rexedoiro waterfall"}},
+    {"nombre": "Buxán", "advocacion": "Santiago", "destacado": {"gl": "Primeira sede do concello (1836), que se chamou Buján", "es": "Primera sede del ayuntamiento (1836), que se llamó Buján", "en": "First seat of the municipality (1836), then called Buján"}},
+    {"nombre": "Coucieiro", "advocacion": "San Martiño", "destacado": {"gl": "Igrexa parroquial catalogada por Turismo de Galicia", "es": "Iglesia parroquial catalogada por Turismo de Galicia", "en": "Parish church listed by Turismo de Galicia"}},
+    {"nombre": "Erbiñou", "advocacion": null, "destacado": {"gl": "Parroquia rural do val", "es": "Parroquia rural del valle", "en": "Rural parish in the valley"}},
+    {"nombre": "Niveiro", "advocacion": "San Vicente", "destacado": {"gl": "Igrexa parroquial catalogada por Turismo de Galicia", "es": "Iglesia parroquial catalogada por Turismo de Galicia", "en": "Parish church listed by Turismo de Galicia"}},
+    {"nombre": "Páramos", "advocacion": "Santa María", "destacado": {"gl": "Igrexa de románico rural galego", "es": "Iglesia de románico rural gallego", "en": "Rural Galician Romanesque church"}},
+    {"nombre": "Portomeiro", "advocacion": "San Cosme", "destacado": {"gl": "Castelo de Portomeiro, sobre un castro do século II a. C.", "es": "Castelo de Portomeiro, sobre un castro del siglo II a. C.", "en": "Castelo de Portomeiro, built on a 2nd-century BC hillfort"}},
+    {"nombre": "Portomouro", "advocacion": "San Cristovo", "destacado": {"gl": "Ponte medieval sobre o Tambre e ruínas da capela de Novais", "es": "Puente medieval sobre el Tambre y ruinas de la capilla de Novais", "en": "Medieval bridge over the Tambre and ruins of the Novais chapel"}},
+    {"nombre": "Rial", "advocacion": "San Vicente", "destacado": {"gl": "Igrexa parroquial catalogada por Turismo de Galicia", "es": "Iglesia parroquial catalogada por Turismo de Galicia", "en": "Parish church listed by Turismo de Galicia"}},
+    {"nombre": "San Román", "advocacion": "San Román", "destacado": {"gl": "Punto de partida da ruta á Pedra do Home", "es": "Punto de partida de la ruta a la Pedra do Home", "en": "Starting point of the trail to the Pedra do Home"}},
+    {"nombre": "Vilariño", "advocacion": null, "destacado": {"gl": "Parroquia rural do val", "es": "Parroquia rural del valle", "en": "Rural parish in the valley"}}
   ],
   "parroquiasFuentes": ["concello-parroquias", "wikipedia-en", "wikipedia-es", "turismo-gal", "wikiloc-pedra", "toponhisp"],
   "territorio": {
-    "relieve": "El río Dubra recorre el municipio de norte a sur por el centro. El valle forma parte de la Depresión Meridiana, una fosa tectónica que se abrió al fracturarse el zócalo paleozoico durante la orogenia alpina. Lo cierran sierras de más de 400 m; solo se abre al norte, hacia Tordoia, y al sur, donde el Dubra se une al Tambre.",
+    "relieve": {
+      "gl": "O río Dubra percorre o municipio de norte a sur polo centro. O val forma parte da Depresión Meridiana, unha fosa tectónica que se abriu ao fracturarse o zócolo paleozoico durante a oroxenia alpina. Péchano serras de máis de 400 m; só se abre ao norte, cara a Tordoia, e ao sur, onde o Dubra se une ao Tambre.",
+      "es": "El río Dubra recorre el municipio de norte a sur por el centro. El valle forma parte de la Depresión Meridiana, una fosa tectónica que se abrió al fracturarse el zócalo paleozoico durante la orogenia alpina. Lo cierran sierras de más de 400 m; solo se abre al norte, hacia Tordoia, y al sur, donde el Dubra se une al Tambre.",
+      "en": "The River Dubra runs through the middle of the municipality from north to south. The valley is part of the Depresión Meridiana, a tectonic trough that opened when the Palaeozoic basement fractured during the Alpine orogeny. It is enclosed by ranges over 400 m high and opens only to the north, towards Tordoia, and to the south, where the Dubra joins the Tambre."
+    },
     "cotas": [
-      { "nombre": "Fondo de los valles fluviales", "altitud": 250, "fuente": "egu" },
-      { "nombre": "Vértice Vilardoa", "altitud": 473, "fuente": "ign-vertices" },
-      { "nombre": "Vértice Facha", "altitud": 508, "fuente": "ign-vertices" },
-      { "nombre": "Mirador do Picoto (monte Buiro)", "altitud": 525, "fuente": "geocaching-picoto" },
-      { "nombre": "Cumbres do Castelo", "altitud": 564, "fuente": "egu" }
+      {"nombre": {"gl": "Fondo dos vales fluviais", "es": "Fondo de los valles fluviales", "en": "Floor of the river valleys"}, "altitud": 250, "fuente": "egu"},
+      {"nombre": {"gl": "Vértice Vilardoa", "es": "Vértice Vilardoa", "en": "Vilardoa trig point"}, "altitud": 473, "fuente": "ign-vertices"},
+      {"nombre": {"gl": "Vértice Facha", "es": "Vértice Facha", "en": "Facha trig point"}, "altitud": 508, "fuente": "ign-vertices"},
+      {"nombre": {"gl": "Mirador do Picoto (monte Buiro)", "es": "Mirador do Picoto (monte Buiro)", "en": "Mirador do Picoto (Mount Buiro)"}, "altitud": 525, "fuente": "geocaching-picoto"},
+      {"nombre": {"gl": "Cumios do Castelo", "es": "Cumbres do Castelo", "en": "Castelo summits"}, "altitud": 564, "fuente": "egu"}
     ],
     "rios": [
-      { "nombre": "Dubra", "descripcion": "Afluente del Tambre por la derecha. Su nombre es un hidrónimo celta que dio nombre a la medieval «terra de Dubra»." },
-      { "nombre": "Tambre", "descripcion": "Marca el límite sur del municipio. Lo cruza el puente medieval de Portomouro." },
-      { "nombre": "Rego de Portonabo", "descripcion": "Afluente del Dubra que forma la Fervenza do Rexedoiro: un salto de unos 10 m en dos tramos." }
+      {"nombre": "Dubra", "descripcion": {"gl": "Afluente do Tambre pola dereita. O seu nome é un hidrónimo celta que deu nome á medieval «terra de Dubra».", "es": "Afluente del Tambre por la derecha. Su nombre es un hidrónimo celta que dio nombre a la medieval «terra de Dubra».", "en": "Right-bank tributary of the Tambre. Its name is a Celtic hydronym that also named the medieval “terra de Dubra”."}},
+      {"nombre": "Tambre", "descripcion": {"gl": "Marca o límite sur do municipio. Crúzao a ponte medieval de Portomouro.", "es": "Marca el límite sur del municipio. Lo cruza el puente medieval de Portomouro.", "en": "Marks the southern boundary of the municipality. It is crossed by the medieval bridge of Portomouro."}},
+      {"nombre": "Rego de Portonabo", "descripcion": {"gl": "Afluente do Dubra que forma a Fervenza do Rexedoiro: un salto duns 10 m en dous tramos.", "es": "Afluente del Dubra que forma la Fervenza do Rexedoiro: un salto de unos 10 m en dos tramos.", "en": "Tributary of the Dubra that forms the Rexedoiro waterfall: a drop of about 10 m in two stages."}}
     ],
     "fuentes": ["egu", "ign-vertices", "geocaching-picoto", "paxinas-descubre", "toponhisp"]
   },
   "historia": [
-    { "fecha": "s. II a. C.", "titulo": "Castros", "texto": "Varios castros muestran que el valle estaba poblado antes de los romanos. El Castelo de Portomeiro se levanta sobre uno de ellos.", "fuentes": ["paxinas-castelo", "paxinas-descubre"] },
-    { "fecha": "Edad Media", "titulo": "La terra de Dubra", "texto": "El río da nombre a un territorio medieval. De esta época son el puente de Portomouro, los sarcófagos de la Pedra do Home y las ruinas de Novais, que se relacionan con un posible monasterio de Novallis.", "fuentes": ["toponhisp", "paxinas-novais", "galiciamaxica-novais"] },
-    { "fecha": "Antiguo Régimen", "titulo": "Jurisdicción y coto", "texto": "Las parroquias se reparten entre la jurisdicción de Dubra y el coto de Buxán, dentro de la provincia de Santiago.", "fuentes": ["toponhisp"] },
-    { "fecha": "1836", "titulo": "Nace el ayuntamiento de Buján", "texto": "El municipio se constituye con el nombre de Buján, forma castellanizada de Buxán, la parroquia donde estaba la casa consistorial.", "fuentes": ["toponhisp"] },
-    { "fecha": "1887", "titulo": "4.634 habitantes", "texto": "Hasta 1900 la población baja un 0,37 % al año por la emigración a América.", "fuentes": ["egu"] },
-    { "fecha": "1950", "titulo": "Máximo histórico: 6.900 vecinos", "texto": "Tras medio siglo de crecimiento, el valle alcanza su mayor población.", "fuentes": ["egu", "foro-ciudad"] },
-    { "fecha": "1950-1970", "titulo": "Rumbo a Europa", "texto": "Cientos de vecinos emigran a Suiza, Alemania, Francia y América. La población cae un 1,07 % al año.", "fuentes": ["egu", "correo-emigrante-2026"] },
-    { "fecha": "1960", "titulo": "Val do Dubra", "texto": "El ayuntamiento cambia su nombre por el del valle: «Valle del Dubra» en castellano y Val do Dubra en gallego.", "fuentes": ["toponhisp"] },
-    { "fecha": "1970-1981", "titulo": "El retorno", "texto": "Con la crisis de 1973 vuelven muchos emigrantes y la población crece un 0,39 % al año.", "fuentes": ["egu"] },
-    { "fecha": "1981", "titulo": "Primer escudo oficial", "texto": "El Real Decreto 3291/1981 autoriza a rehabilitar el escudo: de azur, con un arca de plata y un cometa invertido.", "fuentes": ["boe-escudo-1981"] },
-    { "fecha": "1984", "titulo": "Monumento al emigrante", "texto": "Bembibre levanta una estatua en homenaje a quienes se marcharon.", "fuentes": ["egu"] },
-    { "fecha": "1997", "titulo": "Centro de salud en Bembibre", "texto": "La Xunta licita la construcción del centro de salud municipal.", "fuentes": ["dog-centro-saude"] },
-    { "fecha": "2009", "titulo": "Escudo actual", "texto": "El 18 de marzo se aprueba el escudo vigente: sarcófago de plata sobre ondas, rayo de luz, estrella de seis puntas y corona real cerrada.", "fuentes": ["heraldry"] },
-    { "fecha": "2023", "titulo": "Nueva corporación", "texto": "Elecciones del 28 de mayo. Diego Luis Díaz Méndez (PSdeG-PSOE) es alcalde desde junio.", "fuentes": ["eldiario-28m", "concello-sede", "wikipedia-en"] },
-    { "fecha": "2025", "titulo": "3.680 habitantes", "texto": "Casi la mitad que en 1950.", "fuentes": ["ine-padron"] }
+    {"fecha": {"gl": "s. II a. C.", "es": "s. II a. C.", "en": "2nd c. BC"}, "titulo": {"gl": "Castros", "es": "Castros", "en": "Hillforts"}, "texto": {"gl": "Varios castros mostran que o val estaba poboado antes dos romanos. O Castelo de Portomeiro érguese sobre un deles.", "es": "Varios castros muestran que el valle estaba poblado antes de los romanos. El Castelo de Portomeiro se levanta sobre uno de ellos.", "en": "Several hillforts show that the valley was inhabited before the Romans. The Castelo de Portomeiro stands on one of them."}, "fuentes": ["paxinas-castelo", "paxinas-descubre"]},
+    {"fecha": {"gl": "Idade Media", "es": "Edad Media", "en": "Middle Ages"}, "titulo": {"gl": "A terra de Dubra", "es": "La terra de Dubra", "en": "The terra de Dubra"}, "texto": {"gl": "O río dá nome a un territorio medieval. Desta época son a ponte de Portomouro, os sartegos da Pedra do Home e as ruínas de Novais, que se relacionan cun posible mosteiro de Novallis.", "es": "El río da nombre a un territorio medieval. De esta época son el puente de Portomouro, los sarcófagos de la Pedra do Home y las ruinas de Novais, que se relacionan con un posible monasterio de Novallis.", "en": "The river gives its name to a medieval territory. The Portomouro bridge, the sarcophagi of the Pedra do Home and the Novais ruins, linked to a possible monastery of Novallis, date from this period."}, "fuentes": ["toponhisp", "paxinas-novais", "galiciamaxica-novais"]},
+    {"fecha": {"gl": "Antigo Réxime", "es": "Antiguo Régimen", "en": "Ancien Régime"}, "titulo": {"gl": "Xurisdición e couto", "es": "Jurisdicción y coto", "en": "Jurisdiction and coto"}, "texto": {"gl": "As parroquias repártense entre a xurisdición de Dubra e o couto de Buxán, dentro da provincia de Santiago.", "es": "Las parroquias se reparten entre la jurisdicción de Dubra y el coto de Buxán, dentro de la provincia de Santiago.", "en": "The parishes are split between the jurisdiction of Dubra and the coto (manor) of Buxán, within the province of Santiago."}, "fuentes": ["toponhisp"]},
+    {"fecha": "1836", "titulo": {"gl": "Nace o concello de Buján", "es": "Nace el ayuntamiento de Buján", "en": "The municipality of Buján is created"}, "texto": {"gl": "O municipio constitúese co nome de Buján, forma castelanizada de Buxán, a parroquia onde estaba a casa do concello.", "es": "El municipio se constituye con el nombre de Buján, forma castellanizada de Buxán, la parroquia donde estaba la casa consistorial.", "en": "The municipality is founded under the name Buján, the Castilian form of Buxán, the parish where the town hall stood."}, "fuentes": ["toponhisp"]},
+    {"fecha": "1887", "titulo": {"gl": "4.634 habitantes", "es": "4.634 habitantes", "en": "4,634 inhabitants"}, "texto": {"gl": "Ata 1900 a poboación baixa un 0,37 % ao ano pola emigración a América.", "es": "Hasta 1900 la población baja un 0,37 % al año por la emigración a América.", "en": "Until 1900 the population falls by 0.37% a year due to emigration to the Americas."}, "fuentes": ["egu"]},
+    {"fecha": "1950", "titulo": {"gl": "Máximo histórico: 6.900 veciños", "es": "Máximo histórico: 6.900 vecinos", "en": "All-time high: 6,900 residents"}, "texto": {"gl": "Tras medio século de crecemento, o val alcanza a súa maior poboación.", "es": "Tras medio siglo de crecimiento, el valle alcanza su mayor población.", "en": "After half a century of growth, the valley reaches its largest population."}, "fuentes": ["egu", "foro-ciudad"]},
+    {"fecha": "1950-1970", "titulo": {"gl": "Rumbo a Europa", "es": "Rumbo a Europa", "en": "Bound for Europe"}, "texto": {"gl": "Centos de veciños emigran a Suíza, Alemaña, Francia e América. A poboación cae un 1,07 % ao ano.", "es": "Cientos de vecinos emigran a Suiza, Alemania, Francia y América. La población cae un 1,07 % al año.", "en": "Hundreds of residents emigrate to Switzerland, Germany, France and the Americas. The population falls by 1.07% a year."}, "fuentes": ["egu", "correo-emigrante-2026"]},
+    {"fecha": "1960", "titulo": {"gl": "Val do Dubra", "es": "Val do Dubra", "en": "Val do Dubra"}, "texto": {"gl": "O concello cambia o seu nome polo do val: «Valle del Dubra» en castelán e Val do Dubra en galego.", "es": "El ayuntamiento cambia su nombre por el del valle: «Valle del Dubra» en castellano y Val do Dubra en gallego.", "en": "The municipality takes the name of the valley: “Valle del Dubra” in Spanish and Val do Dubra in Galician."}, "fuentes": ["toponhisp"]},
+    {"fecha": "1970-1981", "titulo": {"gl": "O retorno", "es": "El retorno", "en": "The return"}, "texto": {"gl": "Coa crise de 1973 volven moitos emigrantes e a poboación crece un 0,39 % ao ano.", "es": "Con la crisis de 1973 vuelven muchos emigrantes y la población crece un 0,39 % al año.", "en": "With the 1973 crisis many emigrants come home and the population grows by 0.39% a year."}, "fuentes": ["egu"]},
+    {"fecha": "1981", "titulo": {"gl": "Primeiro escudo oficial", "es": "Primer escudo oficial", "en": "First official coat of arms"}, "texto": {"gl": "O Real Decreto 3291/1981 autoriza a rehabilitar o escudo: de azur, cunha arca de prata e un cometa invertido.", "es": "El Real Decreto 3291/1981 autoriza a rehabilitar el escudo: de azur, con un arca de plata y un cometa invertido.", "en": "Royal Decree 3291/1981 authorises the restoration of the coat of arms: azure, with a silver chest and an inverted comet."}, "fuentes": ["boe-escudo-1981"]},
+    {"fecha": "1984", "titulo": {"gl": "Monumento ao emigrante", "es": "Monumento al emigrante", "en": "Monument to the emigrant"}, "texto": {"gl": "Bembibre ergue unha estatua en homenaxe a quen marchou.", "es": "Bembibre levanta una estatua en homenaje a quienes se marcharon.", "en": "Bembibre puts up a statue in tribute to those who left."}, "fuentes": ["egu"]},
+    {"fecha": "1997", "titulo": {"gl": "Centro de saúde en Bembibre", "es": "Centro de salud en Bembibre", "en": "Health centre in Bembibre"}, "texto": {"gl": "A Xunta licita a construción do centro de saúde municipal.", "es": "La Xunta licita la construcción del centro de salud municipal.", "en": "The Xunta puts the construction of the municipal health centre out to tender."}, "fuentes": ["dog-centro-saude"]},
+    {"fecha": "2009", "titulo": {"gl": "Escudo actual", "es": "Escudo actual", "en": "Current coat of arms"}, "texto": {"gl": "O 18 de marzo apróbase o escudo vixente: sartego de prata sobre ondas, raio de luz, estrela de seis puntas e coroa real pechada.", "es": "El 18 de marzo se aprueba el escudo vigente: sarcófago de plata sobre ondas, rayo de luz, estrella de seis puntas y corona real cerrada.", "en": "On 18 March the current arms are approved: a silver sarcophagus over waves, a ray of light, a six-pointed star and a closed royal crown."}, "fuentes": ["heraldry"]},
+    {"fecha": "2023", "titulo": {"gl": "Nova corporación", "es": "Nueva corporación", "en": "New council"}, "texto": {"gl": "Eleccións do 28 de maio. Diego Luis Díaz Méndez (PSdeG-PSOE) é alcalde dende xuño.", "es": "Elecciones del 28 de mayo. Diego Luis Díaz Méndez (PSdeG-PSOE) es alcalde desde junio.", "en": "Elections on 28 May. Diego Luis Díaz Méndez (PSdeG-PSOE) has been mayor since June."}, "fuentes": ["eldiario-28m", "concello-sede", "wikipedia-en"]},
+    {"fecha": "2025", "titulo": {"gl": "3.680 habitantes", "es": "3.680 habitantes", "en": "3,680 inhabitants"}, "texto": {"gl": "Case a metade que en 1950.", "es": "Casi la mitad que en 1950.", "en": "Almost half as many as in 1950."}, "fuentes": ["ine-padron"]}
   ],
   "economia": {
     "renta": [
-      { "anio": 2022, "bruta": 21873, "disponible": 18750, "fuente": "aeat-irpf-2022" },
-      { "anio": 2023, "bruta": 24745, "disponible": 20877, "declaraciones": 2071, "rankingEspana": 1476, "rankingGalicia": 85, "fuente": "aeat-irpf-2023" }
+      {"anio": 2022, "bruta": 21873, "disponible": 18750, "fuente": "aeat-irpf-2022"},
+      {"anio": 2023, "bruta": 24745, "disponible": 20877, "declaraciones": 2071, "rankingEspana": 1476, "rankingGalicia": 85, "fuente": "aeat-irpf-2023"}
     ],
-    "paroRegistrado": { "anio": 2024, "valor": 118, "fuente": "ige-ficha" },
-    "afiliaciones": { "fecha": "2025-07", "valor": 1458, "fuente": "ige-ficha" },
-    "empresas": { "valor": 238, "fuente": "iberinform", "nota": "Empresas inscritas en un directorio comercial, no un registro oficial." },
-    "empleo2001": { "tasaActividad": 46.7, "tasaOcupacion": 42.3, "tasaParo": 9.5, "primario": 26.9, "primarioDecadaAnterior": 50, "fuente": "egu" },
+    "paroRegistrado": {
+      "anio": 2024,
+      "valor": 118,
+      "fuente": "ige-ficha"
+    },
+    "afiliaciones": {
+      "fecha": "2025-07",
+      "valor": 1458,
+      "fuente": "ige-ficha"
+    },
+    "empresas": {
+      "valor": 238,
+      "fuente": "iberinform",
+      "nota": {
+        "gl": "Empresas inscritas nun directorio comercial, non un rexistro oficial.",
+        "es": "Empresas inscritas en un directorio comercial, no un registro oficial.",
+        "en": "Companies listed in a commercial directory, not an official register."
+      }
+    },
+    "empleo2001": {
+      "tasaActividad": 46.7,
+      "tasaOcupacion": 42.3,
+      "tasaParo": 9.5,
+      "primario": 26.9,
+      "primarioDecadaAnterior": 50,
+      "fuente": "egu"
+    },
     "empleoSectores": {
-      "periodo": "principios de los 2000",
+      "periodo": {
+        "gl": "principios dos 2000",
+        "es": "principios de los 2000",
+        "en": "early 2000s"
+      },
       "datos": [
-        { "sector": "Servicios", "valor": 766 },
-        { "sector": "Agricultura y ganadería", "valor": 481 },
-        { "sector": "Construcción", "valor": 274 },
-        { "sector": "Industria", "valor": 271 },
-        { "sector": "Pesca", "valor": 2 }
+        {"sector": {"gl": "Servizos", "es": "Servicios", "en": "Services"}, "valor": 766},
+        {"sector": {"gl": "Agricultura e gandaría", "es": "Agricultura y ganadería", "en": "Farming and livestock"}, "valor": 481},
+        {"sector": {"gl": "Construción", "es": "Construcción", "en": "Construction"}, "valor": 274},
+        {"sector": {"gl": "Industria", "es": "Industria", "en": "Industry"}, "valor": 271},
+        {"sector": {"gl": "Pesca", "es": "Pesca", "en": "Fishing"}, "valor": 2}
       ],
       "empresas": [
-        { "sector": "Servicios", "valor": 195 },
-        { "sector": "Construcción", "valor": 47 },
-        { "sector": "Industria", "valor": 23 }
+        {"sector": {"gl": "Servizos", "es": "Servicios", "en": "Services"}, "valor": 195},
+        {"sector": {"gl": "Construción", "es": "Construcción", "en": "Construction"}, "valor": 47},
+        {"sector": {"gl": "Industria", "es": "Industria", "en": "Industry"}, "valor": 23}
       ],
       "fuente": "equal-compostela"
     },
-    "texto": "La economía se basa en la agricultura y la ganadería, sobre todo el vacuno de leche y de carne. Bembibre concentra los servicios. La construcción pesa tanto como la industria y en ella abundan los autónomos.",
+    "texto": {
+      "gl": "A economía baséase na agricultura e na gandaría, sobre todo no vacún de leite e de carne. Bembibre concentra os servizos. A construción pesa tanto como a industria e nela abundan os autónomos.",
+      "es": "La economía se basa en la agricultura y la ganadería, sobre todo el vacuno de leche y de carne. Bembibre concentra los servicios. La construcción pesa tanto como la industria y en ella abundan los autónomos.",
+      "en": "The economy rests on farming and livestock, above all dairy and beef cattle. Services are concentrated in Bembibre. Construction carries as much weight as industry, and much of it is done by self-employed workers."
+    },
     "fuentes": ["oficina-economica", "egu", "iberinform"]
   },
   "educacion": {
     "anio": 2025,
     "alumnado": [
-      { "nivel": "Infantil", "valor": 67 },
-      { "nivel": "Primaria", "valor": 150 },
-      { "nivel": "ESO", "valor": 103 }
+      {"nivel": {"gl": "Infantil", "es": "Infantil", "en": "Pre-primary"}, "valor": 67},
+      {"nivel": {"gl": "Primaria", "es": "Primaria", "en": "Primary"}, "valor": 150},
+      {"nivel": {"gl": "ESO", "es": "ESO", "en": "Lower secondary (ESO)"}, "valor": 103}
     ],
     "centros": [
-      { "nombre": "CPI de Bembibre", "descripcion": "Centro público integrado de Infantil, Primaria y ESO.", "fuente": "edu-cpi-bembibre" },
-      { "nombre": "Escola Infantil Municipal", "descripcion": "De 0 a 3 años, abierta de 7:00 a 19:00, con comedor y horario ampliado.", "fuente": "concello-eim" },
-      { "nombre": "Centro de salud de Bembibre", "descripcion": "Atención primaria del Sergas. Su construcción se licitó en 1997.", "fuente": "dog-centro-saude" }
+      {"nombre": "CPI de Bembibre", "descripcion": {"gl": "Centro público integrado de Infantil, Primaria e ESO.", "es": "Centro público integrado de Infantil, Primaria y ESO.", "en": "State integrated school covering pre-primary, primary and lower secondary (ESO)."}, "fuente": "edu-cpi-bembibre"},
+      {"nombre": {"gl": "Escola Infantil Municipal", "es": "Escola Infantil Municipal", "en": "Municipal nursery school"}, "descripcion": {"gl": "De 0 a 3 anos, aberta de 7:00 a 19:00, con comedor e horario ampliado.", "es": "De 0 a 3 años, abierta de 7:00 a 19:00, con comedor y horario ampliado.", "en": "For ages 0 to 3, open from 7:00 to 19:00, with meals and extended hours."}, "fuente": "concello-eim"},
+      {"nombre": {"gl": "Centro de saúde de Bembibre", "es": "Centro de salud de Bembibre", "en": "Bembibre health centre"}, "descripcion": {"gl": "Atención primaria do Sergas. A súa construción licitouse en 1997.", "es": "Atención primaria del Sergas. Su construcción se licitó en 1997.", "en": "Primary care from Sergas, the Galician health service. Its construction was put out to tender in 1997."}, "fuente": "dog-centro-saude"}
     ],
     "fuentes": ["ige-ficha", "edu-cpi-bembibre", "concello-eim"]
   },
@@ -203,63 +262,72 @@
       "votosValidos": 2448,
       "abstencion": 24.62,
       "partidos": [
-        { "siglas": "PP", "nombre": "Partido Popular", "concejales": 5, "porcentaje": 47 },
-        { "siglas": "PSdeG-PSOE", "nombre": "Partido Socialista de Galicia", "concejales": 3, "porcentaje": 27 },
-        { "siglas": "Anova", "nombre": "Anova-Irmandade Nacionalista", "concejales": 3, "porcentaje": 24 },
-        { "siglas": "BNG", "nombre": "Bloque Nacionalista Galego", "concejales": 0, "porcentaje": null },
-        { "siglas": "PG", "nombre": "Partido Galego", "concejales": 0, "porcentaje": null }
+        {"siglas": "PP", "nombre": "Partido Popular", "concejales": 5, "porcentaje": 47},
+        {"siglas": "PSdeG-PSOE", "nombre": "Partido Socialista de Galicia", "concejales": 3, "porcentaje": 27},
+        {"siglas": "Anova", "nombre": "Anova-Irmandade Nacionalista", "concejales": 3, "porcentaje": 24},
+        {"siglas": "BNG", "nombre": "Bloque Nacionalista Galego", "concejales": 0, "porcentaje": null},
+        {"siglas": "PG", "nombre": "Partido Galego", "concejales": 0, "porcentaje": null}
       ],
-      "nota": "Porcentajes aproximados. El PP fue el más votado, pero se quedó a un concejal de la mayoría absoluta (6). La alcaldía es del PSdeG-PSOE.",
+      "nota": {
+        "gl": "Porcentaxes aproximadas. O PP foi o máis votado, pero quedou a un concelleiro da maioría absoluta (6). A alcaldía é do PSdeG-PSOE.",
+        "es": "Porcentajes aproximados. El PP fue el más votado, pero se quedó a un concejal de la mayoría absoluta (6). La alcaldía es del PSdeG-PSOE.",
+        "en": "Approximate percentages. The PP won the most votes but fell one councillor short of an absolute majority (6). The mayor is from the PSdeG-PSOE."
+      },
       "fuentes": ["eldiario-28m", "adiante-2023", "infoelectoral"]
     },
     "generales": [
-      { "anio": 2019, "participacion": 60.27, "PP": 44.9, "PSdeG-PSOE": 28.5, "BNG": 5.8 },
-      { "anio": 2023, "participacion": 72.55, "PP": 57.7, "PSdeG-PSOE": 24.4, "BNG": 6.3 }
+      {"anio": 2019, "participacion": 60.27, "PP": 44.9, "PSdeG-PSOE": 28.5, "BNG": 5.8},
+      {"anio": 2023, "participacion": 72.55, "PP": 57.7, "PSdeG-PSOE": 24.4, "BNG": 6.3}
     ],
     "generalesFuentes": ["ultimahora-23j"]
   },
   "patrimonio": [
-    { "nombre": "Ponte de Portomouro", "tipo": "Puente medieval", "parroquia": "Portomouro", "texto": "Cruza el Tambre a considerable altura con tres grandes arcos iguales y dos menores en los extremos. «Portomouro» se interpreta como «paso antiguo».", "fuentes": ["paxinas-descubre"] },
-    { "nombre": "Igrexa de Santa María de Páramos", "tipo": "Románico", "parroquia": "Páramos", "texto": "Un buen ejemplo del románico rural gallego.", "fuentes": ["paxinas-descubre", "turismo-gal"] },
-    { "nombre": "Castelo de Portomeiro", "tipo": "Castro y fortaleza", "parroquia": "Portomeiro", "texto": "Promontorio estratégico sobre un castro del siglo II a. C., con una fase medieval y vistas al Tambre por el sur y al valle de Portomeiro por el norte.", "fuentes": ["paxinas-castelo"] },
-    { "nombre": "A Pedra do Home", "tipo": "Arqueología", "parroquia": null, "texto": "También llamada Pedra dos Mouros. Es un afloramiento de granito con tres sarcófagos antropomorfos labrados en la roca.", "fuentes": ["paxinas-descubre", "wikiloc-pedra"] },
-    { "nombre": "Capela de Novais", "tipo": "Ruinas", "parroquia": "Portomouro", "texto": "Ruinas de planta rectangular, de mampostería y sillería, cerca del Tambre. Se asocian a un posible monasterio de Novallis.", "fuentes": ["paxinas-novais", "galiciamaxica-novais"] },
-    { "nombre": "Pazo de Cernadas", "tipo": "Pazo", "parroquia": null, "texto": "Residencia nobiliaria que después fue asilo. Hoy acoge al Proyecto Hombre.", "fuentes": ["paxinas-descubre"] },
-    { "nombre": "Telleira de Bembibre", "tipo": "Patrimonio industrial", "parroquia": "Bembibre", "texto": "Ruinas de una fábrica de tejas que funcionó hace más de cien años, en una nave de unos 350 m². Cerca quedan restos de una antigua central hidroeléctrica.", "fuentes": ["paxinas-descubre"] },
-    { "nombre": "Iglesias parroquiales y cruceiros", "tipo": "Arquitectura religiosa", "parroquia": null, "texto": "San Martiño de Coucieiro, San Vicente de Niveiro, San Vicente de Rial, San Cosme de Portomeiro y varios cruceiros. Turismo de Galicia cataloga 13 recursos.", "fuentes": ["turismo-gal"] }
+    {"nombre": "Ponte de Portomouro", "tipo": {"gl": "Ponte medieval", "es": "Puente medieval", "en": "Medieval bridge"}, "parroquia": "Portomouro", "texto": {"gl": "Cruza o Tambre a considerable altura con tres grandes arcos iguais e dous menores nos extremos. «Portomouro» interprétase como «paso antigo».", "es": "Cruza el Tambre a considerable altura con tres grandes arcos iguales y dos menores en los extremos. «Portomouro» se interpreta como «paso antiguo».", "en": "It crosses the Tambre high above the water with three large equal arches and two smaller ones at the ends. “Portomouro” is read as “old crossing”."}, "fuentes": ["paxinas-descubre"]},
+    {"nombre": "Igrexa de Santa María de Páramos", "tipo": {"gl": "Románico", "es": "Románico", "en": "Romanesque"}, "parroquia": "Páramos", "texto": {"gl": "Un bo exemplo do románico rural galego.", "es": "Un buen ejemplo del románico rural gallego.", "en": "A fine example of rural Galician Romanesque."}, "fuentes": ["paxinas-descubre", "turismo-gal"]},
+    {"nombre": "Castelo de Portomeiro", "tipo": {"gl": "Castro e fortaleza", "es": "Castro y fortaleza", "en": "Hillfort and fortress"}, "parroquia": "Portomeiro", "texto": {"gl": "Promontorio estratéxico sobre un castro do século II a. C., cunha fase medieval e vistas ao Tambre polo sur e ao val de Portomeiro polo norte.", "es": "Promontorio estratégico sobre un castro del siglo II a. C., con una fase medieval y vistas al Tambre por el sur y al valle de Portomeiro por el norte.", "en": "A strategic promontory on a 2nd-century BC hillfort, with a medieval phase and views of the Tambre to the south and the Portomeiro valley to the north."}, "fuentes": ["paxinas-castelo"]},
+    {"nombre": "A Pedra do Home", "tipo": {"gl": "Arqueoloxía", "es": "Arqueología", "en": "Archaeology"}, "parroquia": null, "texto": {"gl": "Tamén chamada Pedra dos Mouros. É un afloramento de granito con tres sartegos antropomorfos lavrados na rocha.", "es": "También llamada Pedra dos Mouros. Es un afloramiento de granito con tres sarcófagos antropomorfos labrados en la roca.", "en": "Also called Pedra dos Mouros. A granite outcrop with three human-shaped sarcophagi carved into the rock."}, "fuentes": ["paxinas-descubre", "wikiloc-pedra"]},
+    {"nombre": "Capela de Novais", "tipo": {"gl": "Ruínas", "es": "Ruinas", "en": "Ruins"}, "parroquia": "Portomouro", "texto": {"gl": "Ruínas de planta rectangular, de cachotaría e cantaría, preto do Tambre. Asócianse a un posible mosteiro de Novallis.", "es": "Ruinas de planta rectangular, de mampostería y sillería, cerca del Tambre. Se asocian a un posible monasterio de Novallis.", "en": "Ruins of a rectangular building in rubble and ashlar masonry, near the Tambre. They are linked to a possible monastery of Novallis."}, "fuentes": ["paxinas-novais", "galiciamaxica-novais"]},
+    {"nombre": "Pazo de Cernadas", "tipo": {"gl": "Pazo", "es": "Pazo", "en": "Manor house (pazo)"}, "parroquia": null, "texto": {"gl": "Residencia nobiliaria que despois foi asilo. Hoxe acolle o Proxecto Home.", "es": "Residencia nobiliaria que después fue asilo. Hoy acoge al Proyecto Hombre.", "en": "A noble residence that later became a care home. Today it houses Proyecto Hombre, an addiction recovery charity."}, "fuentes": ["paxinas-descubre"]},
+    {"nombre": "Telleira de Bembibre", "tipo": {"gl": "Patrimonio industrial", "es": "Patrimonio industrial", "en": "Industrial heritage"}, "parroquia": "Bembibre", "texto": {"gl": "Ruínas dunha fábrica de tellas que funcionou hai máis de cen anos, nunha nave duns 350 m². Preto quedan restos dunha antiga central hidroeléctrica.", "es": "Ruinas de una fábrica de tejas que funcionó hace más de cien años, en una nave de unos 350 m². Cerca quedan restos de una antigua central hidroeléctrica.", "en": "Ruins of a roof-tile works that operated over a hundred years ago, in a building of about 350 m². Nearby are the remains of an old hydroelectric plant."}, "fuentes": ["paxinas-descubre"]},
+    {"nombre": {"gl": "Igrexas parroquiais e cruceiros", "es": "Iglesias parroquiales y cruceiros", "en": "Parish churches and cruceiros"}, "tipo": {"gl": "Arquitectura relixiosa", "es": "Arquitectura religiosa", "en": "Religious architecture"}, "parroquia": null, "texto": {"gl": "San Martiño de Coucieiro, San Vicente de Niveiro, San Vicente de Rial, San Cosme de Portomeiro e varios cruceiros. Turismo de Galicia cataloga 13 recursos.", "es": "San Martiño de Coucieiro, San Vicente de Niveiro, San Vicente de Rial, San Cosme de Portomeiro y varios cruceiros. Turismo de Galicia cataloga 13 recursos.", "en": "San Martiño de Coucieiro, San Vicente de Niveiro, San Vicente de Rial, San Cosme de Portomeiro and several cruceiros (stone wayside crosses). Turismo de Galicia lists 13 sites."}, "fuentes": ["turismo-gal"]}
   ],
   "naturaleza": [
-    { "nombre": "Ribeiras do Dubra", "tipo": "Espacio natural", "texto": "Declaradas Espacio Natural de Interés Local (ENIL) por su valor ecológico y paisajístico.", "fuentes": ["paxinas-descubre"] },
-    { "nombre": "PR-G 202 Ruta da Fervenza do Rexedoiro", "tipo": "Ruta homologada", "texto": "Ruta circular de dificultad baja por las carballeiras del Dubra. Sale del Campo da Feira de Bembibre y llega a la fervenza del rego de Portonabo, a unos 250 m de altitud.", "distanciaKm": null, "dificultad": "Baja", "fuentes": ["turismo-prg202", "paxinas-descubre"] },
-    { "nombre": "Ruta do río Dubra", "tipo": "Ruta", "texto": "Ruta circular por la orilla del río.", "distanciaKm": 6, "dificultad": "Baja", "fuentes": ["paxinas-descubre", "concello-rutas"] },
-    { "nombre": "Ruta do río Tambre", "tipo": "Ruta", "texto": "Paseo corto entre carballos, castaños, árboles de ribera y grandes helechos, hasta el área de los Muíños de Rodas.", "distanciaKm": null, "dificultad": "Baja", "fuentes": ["paxinas-descubre", "concello-rutas"] },
-    { "nombre": "Mirador do Picoto", "tipo": "Mirador", "texto": "En el Picoto do Arnexo o monte Buiro, a 525 m. Mira al sureste y desde él se ve todo el valle del Dubra, unos 300 m más abajo.", "fuentes": ["geocaching-picoto", "paxinas-descubre"] },
-    { "nombre": "Área recreativa de Bembibre", "tipo": "Área recreativa", "texto": "Zona de esparcimiento junto al río, con una rueda hidráulica restaurada.", "fuentes": ["santiagoturismo-area", "paxinas-descubre"] }
+    {"nombre": "Ribeiras do Dubra", "tipo": {"gl": "Espazo natural", "es": "Espacio natural", "en": "Natural area"}, "texto": {"gl": "Declaradas Espazo Natural de Interese Local (ENIL) polo seu valor ecolóxico e paisaxístico.", "es": "Declaradas Espacio Natural de Interés Local (ENIL) por su valor ecológico y paisajístico.", "en": "Declared a Natural Area of Local Interest (ENIL) for their ecological and landscape value."}, "fuentes": ["paxinas-descubre"]},
+    {"nombre": "PR-G 202 Ruta da Fervenza do Rexedoiro", "tipo": {"gl": "Ruta homologada", "es": "Ruta homologada", "en": "Waymarked trail"}, "texto": {"gl": "Ruta circular de dificultade baixa polas carballeiras do Dubra. Sae do Campo da Feira de Bembibre e chega á fervenza do rego de Portonabo, a uns 250 m de altitude.", "es": "Ruta circular de dificultad baja por las carballeiras del Dubra. Sale del Campo da Feira de Bembibre y llega a la fervenza del rego de Portonabo, a unos 250 m de altitud.", "en": "An easy circular walk through the Dubra oak woods. It starts at Campo da Feira in Bembibre and reaches the waterfall on the Portonabo stream, at about 250 m."}, "distanciaKm": null, "dificultad": {"gl": "Baixa", "es": "Baja", "en": "Easy"}, "fuentes": ["turismo-prg202", "paxinas-descubre"]},
+    {"nombre": "Ruta do río Dubra", "tipo": {"gl": "Ruta", "es": "Ruta", "en": "Trail"}, "texto": {"gl": "Ruta circular pola beira do río.", "es": "Ruta circular por la orilla del río.", "en": "A circular walk along the riverbank."}, "distanciaKm": 6, "dificultad": {"gl": "Baixa", "es": "Baja", "en": "Easy"}, "fuentes": ["paxinas-descubre", "concello-rutas"]},
+    {"nombre": "Ruta do río Tambre", "tipo": {"gl": "Ruta", "es": "Ruta", "en": "Trail"}, "texto": {"gl": "Paseo curto entre carballos, castiñeiros, árbores de ribeira e grandes fentos, ata a área dos Muíños de Rodas.", "es": "Paseo corto entre carballos, castaños, árboles de ribera y grandes helechos, hasta el área de los Muíños de Rodas.", "en": "A short walk among oaks, chestnuts, riverside trees and large ferns, up to the Muíños de Rodas area."}, "distanciaKm": null, "dificultad": {"gl": "Baixa", "es": "Baja", "en": "Easy"}, "fuentes": ["paxinas-descubre", "concello-rutas"]},
+    {"nombre": "Mirador do Picoto", "tipo": {"gl": "Miradoiro", "es": "Mirador", "en": "Viewpoint"}, "texto": {"gl": "No Picoto do Arnexo ou monte Buiro, a 525 m. Mira ao sueste e dende el vese todo o val do Dubra, uns 300 m máis abaixo.", "es": "En el Picoto do Arnexo o monte Buiro, a 525 m. Mira al sureste y desde él se ve todo el valle del Dubra, unos 300 m más abajo.", "en": "On Picoto do Arnexo, also called Mount Buiro, at 525 m. It faces south-east and looks over the whole Dubra valley, some 300 m below."}, "fuentes": ["geocaching-picoto", "paxinas-descubre"]},
+    {"nombre": {"gl": "Área recreativa de Bembibre", "es": "Área recreativa de Bembibre", "en": "Bembibre picnic area"}, "tipo": {"gl": "Área recreativa", "es": "Área recreativa", "en": "Picnic area"}, "texto": {"gl": "Zona de lecer xunto ao río, cunha roda hidráulica restaurada.", "es": "Zona de esparcimiento junto al río, con una rueda hidráulica restaurada.", "en": "A leisure area by the river, with a restored water wheel."}, "fuentes": ["santiagoturismo-area", "paxinas-descubre"]}
   ],
   "fiestas": [
-    { "mes": "Febrero-marzo", "nombre": "Cocido de Entroido de Portomouro", "texto": "Cocido de Carnaval organizado por la comisión de fiestas en el colegio de la parroquia.", "fuentes": ["paxinas-fiestas"] },
-    { "mes": "Abril", "nombre": "Feiras do Abril", "texto": "En el Campo da Feira de Bembibre: talleres de oficios antiguos, juegos tradicionales, música y degustación de carne de vaca cachena, una raza autóctona.", "fuentes": ["paxinas-feiras"] },
-    { "mes": "Julio", "nombre": "Ruada — Homenaxe a Tito Calviño", "texto": "Encuentro de música tradicional en el área recreativa de Bembibre. La III edición se celebró el 10 de julio de 2026.", "fuentes": ["paxinas-ruada"] },
-    { "mes": "Verano", "nombre": "Fiestas parroquiales", "texto": "Virxe do Carme en Portomouro y Portomeiro, Santiago Apóstol en Buxán y otras fiestas religiosas con verbena.", "fuentes": ["paxinas-fiestas"] },
-    { "mes": "Agosto", "nombre": "Festa do Emigrante y Festa da Cervexa", "texto": "La fiesta grande de Bembibre: homenaje a quienes tuvieron que emigrar, con más de 30 ediciones de la fiesta de la cerveza.", "fuentes": ["paxinas-fiestas", "correo-emigrante-2026"] },
-    { "mes": "Noviembre", "nombre": "Magosto", "texto": "Castañas asadas, chorizos y dulces caseros en el Campo da Feira.", "fuentes": ["paxinas-fiestas"] },
-    { "mes": "Todo el año", "nombre": "Deporte y solidaridad", "texto": "La Dubra Trail, la concentración del Motoclub Val do Dubra, la marcha «Val do Dubra contra o cancro» y la Festa dos Maiores.", "fuentes": ["paxinas-fiestas"] }
+    {"mes": {"gl": "Febreiro-marzo", "es": "Febrero-marzo", "en": "February-March"}, "nombre": {"gl": "Cocido de Entroido de Portomouro", "es": "Cocido de Entroido de Portomouro", "en": "Portomouro Carnival cocido"}, "texto": {"gl": "Cocido de Entroido organizado pola comisión de festas no colexio da parroquia.", "es": "Cocido de Carnaval organizado por la comisión de fiestas en el colegio de la parroquia.", "en": "A Carnival stew (cocido) organised by the festival committee at the parish school."}, "fuentes": ["paxinas-fiestas"]},
+    {"mes": {"gl": "Abril", "es": "Abril", "en": "April"}, "nombre": "Feiras do Abril", "texto": {"gl": "No Campo da Feira de Bembibre: obradoiros de oficios antigos, xogos tradicionais, música e degustación de carne de vaca cachena, unha raza autóctona.", "es": "En el Campo da Feira de Bembibre: talleres de oficios antiguos, juegos tradicionales, música y degustación de carne de vaca cachena, una raza autóctona.", "en": "At Campo da Feira in Bembibre: workshops on traditional crafts, traditional games, music and tastings of cachena beef, a native breed."}, "fuentes": ["paxinas-feiras"]},
+    {"mes": {"gl": "Xullo", "es": "Julio", "en": "July"}, "nombre": "Ruada — Homenaxe a Tito Calviño", "texto": {"gl": "Encontro de música tradicional na área recreativa de Bembibre. A III edición celebrouse o 10 de xullo de 2026.", "es": "Encuentro de música tradicional en el área recreativa de Bembibre. La III edición se celebró el 10 de julio de 2026.", "en": "A gathering of traditional music at the Bembibre picnic area. The 3rd edition took place on 10 July 2026."}, "fuentes": ["paxinas-ruada"]},
+    {"mes": {"gl": "Verán", "es": "Verano", "en": "Summer"}, "nombre": {"gl": "Festas parroquiais", "es": "Fiestas parroquiales", "en": "Parish festivals"}, "texto": {"gl": "Virxe do Carme en Portomouro e Portomeiro, Santiago Apóstolo en Buxán e outras festas relixiosas con verbena.", "es": "Virxe do Carme en Portomouro y Portomeiro, Santiago Apóstol en Buxán y otras fiestas religiosas con verbena.", "en": "Virxe do Carme in Portomouro and Portomeiro, Santiago Apóstolo in Buxán and other religious festivals with an open-air dance."}, "fuentes": ["paxinas-fiestas"]},
+    {"mes": {"gl": "Agosto", "es": "Agosto", "en": "August"}, "nombre": {"gl": "Festa do Emigrante e Festa da Cervexa", "es": "Festa do Emigrante y Festa da Cervexa", "en": "Festa do Emigrante and Festa da Cervexa"}, "texto": {"gl": "A festa grande de Bembibre: homenaxe a quen tivo que emigrar, con máis de 30 edicións da festa da cervexa.", "es": "La fiesta grande de Bembibre: homenaje a quienes tuvieron que emigrar, con más de 30 ediciones de la fiesta de la cerveza.", "en": "Bembibre’s main festival: a tribute to those who had to emigrate, with more than 30 editions of the beer festival."}, "fuentes": ["paxinas-fiestas", "correo-emigrante-2026"]},
+    {"mes": {"gl": "Novembro", "es": "Noviembre", "en": "November"}, "nombre": "Magosto", "texto": {"gl": "Castañas asadas, chourizos e doces caseiros no Campo da Feira.", "es": "Castañas asadas, chorizos y dulces caseros en el Campo da Feira.", "en": "Roast chestnuts, chorizo and homemade sweets at Campo da Feira."}, "fuentes": ["paxinas-fiestas"]},
+    {"mes": {"gl": "Todo o ano", "es": "Todo el año", "en": "All year"}, "nombre": {"gl": "Deporte e solidariedade", "es": "Deporte y solidaridad", "en": "Sport and solidarity"}, "texto": {"gl": "A Dubra Trail, a concentración do Motoclub Val do Dubra, a marcha «Val do Dubra contra o cancro» e a Festa dos Maiores.", "es": "La Dubra Trail, la concentración del Motoclub Val do Dubra, la marcha «Val do Dubra contra o cancro» y la Festa dos Maiores.", "en": "The Dubra Trail race, the Motoclub Val do Dubra rally, the “Val do Dubra contra o cancro” charity walk and the Festa dos Maiores for older residents."}, "fuentes": ["paxinas-fiestas"]}
   ],
   "emigracion": {
     "emigrantes2005": 3493,
     "rankingGalicia2005": 4,
     "emigrantes1986": 901,
     "porcentaje1986": 17,
-    "destinos": ["Suiza", "Alemania", "Francia", "América"],
+    "destinos": [
+      {"gl": "Suíza", "es": "Suiza", "en": "Switzerland"},
+      {"gl": "Alemaña", "es": "Alemania", "en": "Germany"},
+      {"gl": "Francia", "es": "Francia", "en": "France"},
+      {"gl": "América", "es": "América", "en": "the Americas"}
+    ],
     "fuentes": ["egu", "correo-emigrante-2026", "diariodesantiago-orfebreria"]
   },
   "fuentesParaAmpliar": [
-    { "nombre": "Atlas de Distribución de Renta de los Hogares", "organismo": "INE", "url": "https://www.ine.es/experimental/atlas/experimental_atlas.htm", "uso": "Renta neta por hogar y persona por sección censal." },
-    { "nombre": "Paro registrado por municipios", "organismo": "SEPE", "url": "https://www.sepe.es/HomeSepe/que-es-el-sepe/estadisticas/datos-estadisticos/municipios.html", "uso": "Paro mensual por sexo, edad y sector." },
-    { "nombre": "Censo Agrario 2020", "organismo": "INE", "url": "https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176851&menu=resultados&idp=1254735727106", "uso": "Explotaciones, superficie agraria y cabezas de ganado." },
-    { "nombre": "Sede Electrónica del Catastro", "organismo": "Ministerio de Hacienda", "url": "https://www.sedecatastro.gob.es/", "uso": "Parcelas, superficie construida y usos del suelo." },
-    { "nombre": "Nomenclátor de Galicia", "organismo": "Xunta de Galicia", "url": "https://www.xunta.gal/toponimia", "uso": "Nombres oficiales de lugares y parroquias." },
-    { "nombre": "Visor del Sistema de Información Territorial de Galicia", "organismo": "Xunta de Galicia", "url": "https://mapas.xunta.gal/", "uso": "Cartografía, ortofotos y planeamiento." },
-    { "nombre": "OpenStreetMap", "organismo": "Comunidad OSM", "url": "https://www.openstreetmap.org/#map=12/43.0225/-8.6383", "uso": "Mapa libre del municipio." }
+    {"nombre": {"gl": "Atlas de distribución da renda dos fogares", "es": "Atlas de Distribución de Renta de los Hogares", "en": "Household Income Distribution Atlas"}, "organismo": "INE", "url": "https://www.ine.es/experimental/atlas/experimental_atlas.htm", "uso": {"gl": "Renda neta por fogar e persoa por sección censual.", "es": "Renta neta por hogar y persona por sección censal.", "en": "Net income per household and per person by census tract."}},
+    {"nombre": {"gl": "Paro rexistrado por municipios", "es": "Paro registrado por municipios", "en": "Registered unemployment by municipality"}, "organismo": "SEPE", "url": "https://www.sepe.es/HomeSepe/que-es-el-sepe/estadisticas/datos-estadisticos/municipios.html", "uso": {"gl": "Paro mensual por sexo, idade e sector.", "es": "Paro mensual por sexo, edad y sector.", "en": "Monthly unemployment by sex, age and sector."}},
+    {"nombre": {"gl": "Censo Agrario 2020", "es": "Censo Agrario 2020", "en": "Agricultural Census 2020"}, "organismo": "INE", "url": "https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176851&menu=resultados&idp=1254735727106", "uso": {"gl": "Explotacións, superficie agraria e cabezas de gando.", "es": "Explotaciones, superficie agraria y cabezas de ganado.", "en": "Farms, farmland area and livestock numbers."}},
+    {"nombre": {"gl": "Sede Electrónica do Catastro", "es": "Sede Electrónica del Catastro", "en": "Land Registry (Catastro) e-office"}, "organismo": {"gl": "Ministerio de Facenda", "es": "Ministerio de Hacienda", "en": "Spanish Ministry of Finance"}, "url": "https://www.sedecatastro.gob.es/", "uso": {"gl": "Parcelas, superficie construída e usos do solo.", "es": "Parcelas, superficie construida y usos del suelo.", "en": "Plots, built-up area and land use."}},
+    {"nombre": {"gl": "Nomenclátor de Galicia", "es": "Nomenclátor de Galicia", "en": "Galician gazetteer (Nomenclátor)"}, "organismo": "Xunta de Galicia", "url": "https://www.xunta.gal/toponimia", "uso": {"gl": "Nomes oficiais de lugares e parroquias.", "es": "Nombres oficiales de lugares y parroquias.", "en": "Official names of places and parishes."}},
+    {"nombre": {"gl": "Visor do Sistema de Información Territorial de Galicia", "es": "Visor del Sistema de Información Territorial de Galicia", "en": "Galician Territorial Information System viewer"}, "organismo": "Xunta de Galicia", "url": "https://mapas.xunta.gal/", "uso": {"gl": "Cartografía, ortofotos e planeamento.", "es": "Cartografía, ortofotos y planeamiento.", "en": "Maps, aerial photos and planning."}},
+    {"nombre": "OpenStreetMap", "organismo": {"gl": "Comunidade OSM", "es": "Comunidad OSM", "en": "OSM community"}, "url": "https://www.openstreetmap.org/#map=12/43.0225/-8.6383", "uso": {"gl": "Mapa libre do municipio.", "es": "Mapa libre del municipio.", "en": "Free map of the municipality."}}
   ]
 }

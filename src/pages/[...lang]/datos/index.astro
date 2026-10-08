@@ -1,0 +1,49 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { datos, fuentes, url } from '../../../lib/datos';
+import { langPaths, useI18n } from '../../../i18n';
+
+export const getStaticPaths = langPaths;
+
+const { t, data } = useI18n(Astro.url);
+const T = t.datosPax;
+// As descargas son as mesmas para todos os idiomas
+const descargas = [
+  { fmt: 'JSON', href: url('datos/val-do-dubra.json'), texto: T.json },
+  { fmt: 'CSV', href: url('datos/poblacion.csv'), texto: T.poboacion },
+  { fmt: 'CSV', href: url('datos/fuentes.csv'), texto: T.fontes(fuentes.length) },
+];
+const bloques = Object.keys(datos).filter((k) => k !== 'meta');
+---
+<Base title={T.titulo} current="datos" description={T.descricion}>
+  <div class="wrap" style="padding-block:clamp(2.5rem,5vw,4.5rem) 4rem">
+    <header class="chapter-head">
+      <div class="chapter-num" aria-hidden="true">{'{ }'}</div>
+      <div>
+        <p class="kicker">{T.titulo}</p>
+        <h1 style="font-size:var(--step-4);margin-top:.35rem">{T.h1}</h1>
+        <p class="lede" style="margin-top:1rem;max-width:56ch">{T.lede}</p>
+      </div>
+    </header>
+    <div class="downloads">
+      {descargas.map((d) => (
+        <a class="card download" href={d.href} download>
+          <span class="fmt">.{d.fmt.toLowerCase()}</span>
+          <h2 style="font-size:var(--step-1)">{d.texto[0]}</h2>
+          <p>{d.texto[1]}</p>
+          <span class="meta">{T.descargar(d.fmt)}</span>
+        </a>
+      ))}
+    </div>
+    <section class="block grid-2">
+      <div class="prose">
+        <h2 style="font-size:var(--step-2)">{T.conten}</h2>
+        <p set:html={T.contenP1(bloques.length, bloques.join(', '))} />
+        <p set:html={T.contenP2} />
+      </div>
+      <div class="callout">
+        <p set:html={T.licenza(data(datos.meta.actualizado))} />
+      </div>
+    </section>
+  </div>
+</Base>

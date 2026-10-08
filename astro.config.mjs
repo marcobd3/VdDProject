@@ -12,7 +12,8 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'ignore',
-  integrations: [sitemap()],
+  // Galego na raíz (idioma predeterminado), castelán en /es/ e inglés en /en/
+  integrations: [sitemap({ i18n: { defaultLocale: 'gl', locales: { gl: 'gl-ES', es: 'es-ES', en: 'en-GB' } } })],
   build: { inlineStylesheets: 'auto' },
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

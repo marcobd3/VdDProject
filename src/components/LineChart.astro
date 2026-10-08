@@ -1,5 +1,5 @@
 ---
-import { n } from '../lib/datos';
+import { useI18n } from '../i18n';
 interface Point { x: number; y: number; label?: string; note?: string }
 interface Props {
   points: Point[];
@@ -12,7 +12,8 @@ interface Props {
   height?: number;
   width?: number;
 }
-const { points, yTicks, xTicks, highlight = [], title, unit = 'habitantes', height = 320, width = 720 } = Astro.props;
+const { n, t } = useI18n(Astro.url);
+const { points, yTicks, xTicks, highlight = [], title, unit = t.comun.habitantes, height = 320, width = 720 } = Astro.props;
 const W = width, H = height;
 const m = W >= 600 ? { t: 36, r: 28, b: 44, l: 70 } : { t: 28, r: 20, b: 34, l: 48 };
 const xs = points.map((p) => p.x);
