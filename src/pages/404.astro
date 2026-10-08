@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/datos';
+---
+<Base title="Página no encontrada" description="Esta página no existe en Val do Dubra en datos.">
+  <div class="wrap" style="padding-block:6rem;min-height:60vh">
+    <p class="kicker">Error 404</p>
+    <h1 style="font-size:var(--step-5);line-height:.9;margin-top:.5rem">Te perdiste<br /><em style="font-weight:300;color:var(--clay-ink)">en el valle</em></h1>
+    <p class="lede" style="margin-top:1.5rem">Esta página no existe. El río sigue su curso: vuelve al inicio.</p>
+    <p style="margin-top:2rem"><a class="btn btn-primary" href={url('')}>Volver al inicio</a></p>
+  </div>
+</Base>

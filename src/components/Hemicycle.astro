@@ -1,0 +1,26 @@
+---
+interface Party { siglas: string; concejales: number; color: string }
+interface Props { parties: Party[]; title: string }
+const { parties, title } = Astro.props;
+const total = parties.reduce((s, p) => s + p.concejales, 0);
+// escaños en un arco: radio único (11 escaños) ordenados izquierda → derecha
+const W = 360, H = 200, cx = W / 2, cy = H - 14, R = 140, r = 17;
+const seats: { x: number; y: number; color: string; siglas: string }[] = [];
+const flat = parties.flatMap((p) => Array.from({ length: p.concejales }, () => p));
+flat.forEach((p, i) => {
+  const a = Math.PI - (Math.PI * (i + 0.5)) / total;
+  seats.push({ x: cx + R * Math.cos(a), y: cy - R * Math.sin(a), color: p.color, siglas: p.siglas });
+});
+---
+<div class="chart-wrap">
+  <svg class="chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title}>
+    {seats.map((s, i) => (
+      <circle cx={s.x} cy={s.y} r={r} style={`fill:${s.color}`} stroke="var(--card)" stroke-width="3" tabindex="0" role="img"
+        data-tip={`<strong>${s.siglas}</strong><br>Concejal ${i + 1} de ${total}`} data-x={s.x} data-y={s.y - r}
+        aria-label={`Concejal ${i + 1}: ${s.siglas}`} />
+    ))}
+    <text x={cx} y={cy - 40} text-anchor="middle" class="lbl" style="font-size:44px;font-family:var(--font-display);font-weight:600">{total}</text>
+    <text x={cx} y={cy - 14} text-anchor="middle" class="lbl-muted">concejales · mayoría: {Math.floor(total / 2) + 1}</text>
+  </svg>
+  <div class="chart-tip" role="status" aria-live="polite"></div>
+</div>

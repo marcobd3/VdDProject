@@ -1,0 +1,15 @@
+---
+import { fuente, url } from '../lib/datos';
+interface Props { ids: string[]; nota?: string }
+const { ids, nota } = Astro.props;
+const lista = [...new Set(ids)].map(fuente);
+---
+<p class="source-line">
+  <span>Fuente{lista.length > 1 ? 's' : ''}: </span>
+  {lista.map((f, i) => (
+    <>
+      <a href={url(`fuentes/#${f.id}`)}>{f.organismo}</a>{i < lista.length - 1 ? ' · ' : ''}
+    </>
+  ))}
+  {nota && <span>. {nota}</span>}
+</p>
