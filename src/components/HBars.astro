@@ -1,0 +1,17 @@
+---
+import { n } from '../lib/datos';
+interface Item { label: string; value: number; display?: string; alt?: boolean }
+interface Props { items: Item[]; max?: number; label: string; suffix?: string; compact?: boolean }
+const { items, max = Math.max(...items.map((i) => i.value)), label, suffix = '', compact = false } = Astro.props;
+---
+<div class:list={["hbars reveal", { compact }]} role="list" aria-label={label}>
+  {items.map((it) => (
+    <div class="hbar" role="listitem">
+      <span>{it.label}</span>
+      <span class="hbar-track">
+        <span class={`hbar-fill${it.alt ? ' alt' : ''}`} style={`width:${Math.max((it.value / max) * 100, 0.5)}%`}></span>
+        <span class="hbar-val">{it.display ?? `${n(it.value)}${suffix}`}</span>
+      </span>
+    </div>
+  ))}
+</div>

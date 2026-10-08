@@ -1,0 +1,122 @@
+---
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/fraunces/opsz-italic.css';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
+import { url, datos } from '../lib/datos';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: 'inicio' | 'fuentes' | 'datos';
+  jsonLd?: Record<string, unknown>[];
+}
+const { title, description, current, jsonLd = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url('og.png'), Astro.site);
+const fullTitle = current === 'inicio' ? title : `${title} · Val do Dubra en datos`;
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Val do Dubra en datos',
+    url: new URL(url(''), Astro.site).href,
+    inLanguage: 'es',
+  },
+  ...jsonLd,
+];
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#f6f2e9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121613" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Val do Dubra en datos" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="geo.region" content="ES-C" />
+    <meta name="geo.placename" content="Val do Dubra" />
+    <meta name="geo.position" content={`${datos.ficha.coordenadas.lat};${datos.ficha.coordenadas.lon}`} />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        try { var t = localStorage.getItem('tema'); if (t === 'light' || t === 'dark') d.dataset.theme = t; } catch (e) {}
+      })();
+    </script>
+    {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={url('')} aria-label="Val do Dubra en datos, inicio">
+          <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M4 26c5-1 6-6 10-7s6 2 9-1 2-8 5-12" />
+            <path d="M4 20c4 0 5-3 8-4" opacity=".45" />
+          </svg>
+          <span>Val do Dubra <em class="long">en datos</em></span>
+        </a>
+        <nav class="site-nav" aria-label="Principal">
+          <a href={url('')} aria-current={current === 'inicio' ? 'page' : undefined} class="hide-sm">Inicio</a>
+          <a href={url('fuentes/')} aria-current={current === 'fuentes' ? 'page' : undefined}>Fuentes</a>
+          <a href={url('datos/')} aria-current={current === 'datos' ? 'page' : undefined}>Datos</a>
+          <button class="theme-toggle" type="button" aria-label="Cambiar tema claro u oscuro" data-theme-toggle>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <h2>Val do Dubra <em>en datos</em></h2>
+          <p style="margin-top:.75rem;max-width:46ch">
+            Un proyecto de divulgación para vecinos y curiosos. Reúne datos públicos del concello en un solo sitio y cita siempre su fuente.
+            No es una web oficial del Concello de Val do Dubra.
+          </p>
+          <p class="small muted" style="margin-top:.75rem">Última revisión de los datos: <time datetime={datos.meta.actualizado}>8 de octubre de 2026</time>.</p>
+        </div>
+        <div>
+          <h3 class="kicker" style="margin-bottom:.75rem">Explorar</h3>
+          <ul>
+            <li><a href={url('#territorio')}>Territorio</a></li>
+            <li><a href={url('#poblacion')}>Población</a></li>
+            <li><a href={url('#historia')}>Historia</a></li>
+            <li><a href={url('#curiosidades')}>Curiosidades</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="kicker" style="margin-bottom:.75rem">Transparencia</h3>
+          <ul>
+            <li><a href={url('fuentes/')}>Catálogo de fuentes</a></li>
+            <li><a href={url('datos/')}>Descargar los datos</a></li>
+            <li><a href="https://valdodubra.gal/" rel="noopener">Web del Concello ↗</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script>
+      import '../lib/cliente';
+    </script>
+  </body>
+</html>

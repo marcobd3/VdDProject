@@ -1,0 +1,12 @@
+---
+import { fuente, numFuente, url } from '../lib/datos';
+interface Props { ids: string[] }
+const { ids } = Astro.props;
+const unicos = [...new Set(ids)].sort((a, b) => numFuente(a) - numFuente(b));
+---
+<span class="refs">
+  {unicos.map((id) => {
+    const f = fuente(id);
+    return <a href={url(`fuentes/#${id}`)} title={`${f.nombre} — ${f.organismo}`} aria-label={`Fuente ${numFuente(id)}: ${f.nombre}`}>{numFuente(id)}</a>;
+  })}
+</span>

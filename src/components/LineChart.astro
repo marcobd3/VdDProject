@@ -1,0 +1,62 @@
+---
+import { n } from '../lib/datos';
+interface Point { x: number; y: number; label?: string; note?: string }
+interface Props {
+  points: Point[];
+  yMax?: number;
+  yTicks?: number[];
+  xTicks?: number[];
+  highlight?: number[];
+  title: string;
+  unit?: string;
+  height?: number;
+  width?: number;
+}
+const { points, yTicks, xTicks, highlight = [], title, unit = 'habitantes', height = 320, width = 720 } = Astro.props;
+const W = width, H = height;
+const m = W >= 600 ? { t: 36, r: 28, b: 44, l: 70 } : { t: 28, r: 20, b: 34, l: 48 };
+const xs = points.map((p) => p.x);
+const x0 = Math.min(...xs), x1 = Math.max(...xs);
+const yMax = Astro.props.yMax ?? Math.ceil(Math.max(...points.map((p) => p.y)) / 1000) * 1000;
+const sx = (x: number) => m.l + ((x - x0) / (x1 - x0)) * (W - m.l - m.r);
+const sy = (y: number) => H - m.b - (y / yMax) * (H - m.t - m.b);
+const ticksY = yTicks ?? Array.from({ length: 5 }, (_, i) => (yMax / 4) * i);
+const ticksX = xTicks ?? xs;
+const d = points.map((p, i) => `${i ? 'L' : 'M'}${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join(' ');
+const area = `${d} L${sx(x1)},${sy(0)} L${sx(x0)},${sy(0)} Z`;
+const peak = points.reduce((a, b) => (b.y > a.y ? b : a));
+const labelled = new Set([points[0].x, peak.x, points[points.length - 1].x, ...highlight]);
+// zonas de hover: del punto medio anterior al siguiente
+const bands = points.map((p, i) => {
+  const left = i === 0 ? m.l : (sx(points[i - 1].x) + sx(p.x)) / 2;
+  const right = i === points.length - 1 ? W - m.r : (sx(p.x) + sx(points[i + 1].x)) / 2;
+  return { p, left, width: right - left };
+});
+---
+<div class="chart-wrap">
+  <svg class:list={["chart", { "chart-lg": W >= 600 }]} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title}>
+    <g class="grid" aria-hidden="true">
+      {ticksY.map((t) => <line x1={m.l} x2={W - m.r} y1={sy(t)} y2={sy(t)} />)}
+    </g>
+    <g class="axis" aria-hidden="true">
+      {ticksY.map((t) => <text x={m.l - 10} y={sy(t) + 4} text-anchor="end">{n(t)}</text>)}
+      {ticksX.map((t) => <text x={sx(t)} y={H - m.b + (W >= 600 ? 28 : 22)} text-anchor="middle">{t}</text>)}
+    </g>
+    <line class="baseline" x1={m.l} x2={W - m.r} y1={sy(0)} y2={sy(0)} aria-hidden="true" />
+    <path class="area" d={area} aria-hidden="true" />
+    <path class="line" d={d} aria-hidden="true" />
+    <line class="hover-line" x1="0" x2="0" y1={m.t} y2={sy(0)} aria-hidden="true" />
+    {points.map((p) => (
+      <circle class={`dot${p.x === peak.x ? ' peak' : ''}`} cx={sx(p.x)} cy={sy(p.y)} r={labelled.has(p.x) ? 5.5 : 4} aria-hidden="true" />
+    ))}
+    {points.filter((p) => labelled.has(p.x)).map((p) => (
+      <text class="lbl" x={sx(p.x)} y={sy(p.y) - 13} text-anchor={p.x === x0 ? 'start' : p.x === x1 ? 'end' : 'middle'}>{n(p.y)}</text>
+    ))}
+    {bands.map(({ p, left, width }) => (
+      <rect class="hit" x={left} y={m.t} width={width} height={H - m.t - m.b} tabindex="0" role="img"
+        data-tip={`<strong>${p.label ?? p.x}</strong><br>${n(p.y)} ${unit}${p.note ? `<br><em>${p.note}</em>` : ''}`}
+        data-x={sx(p.x)} data-y={sy(p.y)} aria-label={`${p.label ?? p.x}: ${n(p.y)} ${unit}`} />
+    ))}
+  </svg>
+  <div class="chart-tip" role="status" aria-live="polite"></div>
+</div>

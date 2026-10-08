@@ -1,0 +1,11 @@
+---
+interface Props { value: string; unit?: string; label: string; note?: string; countTo?: number; decimals?: number }
+const { value, unit, label, note, countTo, decimals = 0 } = Astro.props;
+---
+<div class="stat">
+  <div class="stat-value">
+    <span data-count={countTo} data-decimals={decimals}>{value}</span>{unit && <span class="unit">{unit}</span>}
+  </div>
+  <div class="stat-label">{label}<slot /></div>
+  {note && <div class="stat-note">{note}</div>}
+</div>

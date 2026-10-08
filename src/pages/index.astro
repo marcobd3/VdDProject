@@ -1,0 +1,574 @@
+---
+import Base from '../layouts/Base.astro';
+import Chapter from '../components/Chapter.astro';
+import Stat from '../components/Stat.astro';
+import Refs from '../components/Refs.astro';
+import SourceLine from '../components/SourceLine.astro';
+import LineChart from '../components/LineChart.astro';
+import Hemicycle from '../components/Hemicycle.astro';
+import HBars from '../components/HBars.astro';
+import DataTable from '../components/DataTable.astro';
+import { datos, fuentes, n, pct, url, tipos } from '../lib/datos';
+
+const { ficha, poblacion: pob, economia: eco, politica: pol } = datos;
+
+// --- Cálculos derivados (todo a partir de datos.json) ---
+const maxHist = pob.historica.reduce((a, b) => (b.valor > a.valor ? b : a));
+const ultimo = pob.padron[pob.padron.length - 1];
+const perdidaDesdeMax = ((maxHist.valor - ultimo.valor) / maxHist.valor) * 100;
+const est = pob.estructura;
+const [ninos, , mayores] = est.edades.map((e) => e.valor);
+const mayoresPorNino = mayores / ninos;
+const mn = pob.movimientoNatural;
+const ce = pob.censoElectoral;
+const ceraPct = (ce.residentesAusentes / ce.total) * 100;
+const waffleB = Math.round(ceraPct);
+const bembibre = pob.nucleos[0].serie;
+const bembibre0 = bembibre[0], bembibre1 = bembibre[bembibre.length - 1];
+const padron2010 = pob.padron.find((p) => p.anio === 2010)!;
+const padronBembibreAnio = pob.padron.find((p) => p.anio === bembibre1.anio)!;
+const crecBembibre = ((bembibre1.valor - bembibre0.valor) / bembibre0.valor) * 100;
+const caidaConcello = ((padronBembibreAnio.valor - padron2010.valor) / padron2010.valor) * 100;
+const pesoBembibre = (bembibre1.valor / padronBembibreAnio.valor) * 100;
+const [renta22, renta23] = eco.renta;
+const subidaRenta = ((renta23.bruta - renta22.bruta) / renta22.bruta) * 100;
+const m23 = pol.municipales2023;
+const partyColor: Record<string, string> = { PP: 'var(--party-1)', 'PSdeG-PSOE': 'var(--party-2)', Anova: 'var(--party-3)' };
+const conEscano = m23.partidos.filter((p) => p.concejales > 0);
+const densidad = ficha.poblacion / ficha.superficieKm2;
+const densidadGalicia = 91; // aprox.: 2,70 M hab. / 29.575 km²
+const campoFutbol = 0.00714; // km² de un campo de 105 × 68 m
+const campos = Math.round(ficha.superficieKm2 / campoFutbol);
+
+const capitulos = [
+  { id: 'ficha', t: 'Ficha rápida' },
+  { id: 'territorio', t: 'Territorio' },
+  { id: 'poblacion', t: 'Población' },
+  { id: 'diaspora', t: 'La diáspora' },
+  { id: 'parroquias', t: 'Parroquias' },
+  { id: 'historia', t: 'Historia' },
+  { id: 'economia', t: 'Economía y servicios' },
+  { id: 'politica', t: 'Política' },
+  { id: 'patrimonio', t: 'Patrimonio y naturaleza' },
+  { id: 'fiestas', t: 'Fiestas' },
+  { id: 'curiosidades', t: 'Curiosidades' },
+  { id: 'fuentes', t: 'Fuentes' },
+];
+const pad = (i: number) => String(i).padStart(2, '0');
+
+const ticker = [
+  `${n(ficha.poblacion)} vecinos`,
+  `${ficha.parroquias} parroquias`,
+  `${n(ficha.superficieKm2)} km²`,
+  `Máximo histórico: ${n(maxHist.valor)} habitantes en ${maxHist.anio}`,
+  `${n(ceraPct, 0)} % del censo electoral vive fuera`,
+  `Se llamó Buján hasta 1960`,
+  `Castro del siglo II a. C. en Portomeiro`,
+  `${fuentes.length} fuentes citadas`,
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AdministrativeArea',
+    name: 'Val do Dubra',
+    alternateName: 'Valle del Dubra',
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Provincia de A Coruña' },
+    geo: { '@type': 'GeoCoordinates', latitude: ficha.coordenadas.lat, longitude: ficha.coordenadas.lon },
+    identifier: `INE ${ficha.codigoINE}`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'Val do Dubra en datos',
+    description: 'Datos estadísticos y documentales del municipio de Val do Dubra (A Coruña) recopilados de fuentes públicas.',
+    inLanguage: 'es',
+    spatialCoverage: 'Val do Dubra, A Coruña, Galicia, España',
+    dateModified: datos.meta.actualizado,
+    isAccessibleForFree: true,
+    distribution: [
+      { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: new URL(url('datos/val-do-dubra.json'), Astro.site).href },
+      { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: new URL(url('datos/poblacion.csv'), Astro.site).href },
+    ],
+  },
+];
+---
+<Base
+  title="Val do Dubra en datos · Población, historia, parroquias y curiosidades"
+  description={`Todo sobre Val do Dubra (A Coruña) en cifras: ${n(ficha.poblacion)} habitantes, 12 parroquias, historia, economía, patrimonio, fiestas y ${fuentes.length} fuentes públicas citadas.`}
+  current="inicio"
+  jsonLd={jsonLd}
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <svg class="hero-river" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path class="main" d="M1180 -20 C 1120 120, 1260 180, 1150 300 S 980 420, 1060 540 S 1240 640, 1180 760" />
+      <path d="M1230 -20 C 1180 120, 1320 200, 1210 310 S 1040 440, 1120 560 S 1300 650, 1240 760" />
+      <path d="M1290 -20 C 1240 110, 1380 220, 1270 330 S 1100 460, 1180 580 S 1360 660, 1300 760" />
+    </svg>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker">Concello de la comarca de Santiago · A Coruña</p>
+        <h1 id="hero-title">
+          Val <span class="do">do</span> <span class="dubra">Dubra</span>
+        </h1>
+        <p class="lede">
+          Un valle, doce parroquias y siglos de historia contados en datos. Todo lo que se publica sobre el concello, reunido en un solo sitio y con su fuente al lado.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#ficha">
+            Infórmate
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a class="btn btn-ghost" href={url('fuentes/')}>Ver las {fuentes.length} fuentes</a>
+        </div>
+      </div>
+      <aside class="hero-card fade" aria-label="Val do Dubra en cuatro cifras">
+        <dl>
+          <div><dt>Habitantes (2025)</dt><dd class="num">{n(ficha.poblacion)}</dd></div>
+          <div><dt>Superficie</dt><dd class="num">{n(ficha.superficieKm2)} <small>km²</small></dd></div>
+          <div><dt>Parroquias</dt><dd class="num">{ficha.parroquias}</dd></div>
+          <div><dt>Edad media</dt><dd class="num">{n(est.edadMedia, 1)} <small>años</small></dd></div>
+        </dl>
+        <p class="card-foot">Código INE {ficha.codigoINE} · Capital: {ficha.capital} <Refs ids={['ine-padron', 'ige-ficha']} /></p>
+      </aside>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[...ticker, ...ticker].map((t) => <span>{t}</span>)}
+    </div>
+  </div>
+
+  <div class="wrap doc">
+    <!-- ============ ÍNDICE ============ -->
+    <nav class="toc" aria-label="Índice de capítulos">
+      <div>
+        <details open>
+          <summary>Índice</summary>
+          <ol>
+            {capitulos.map((c, i) => <li><a href={`#${c.id}`}><span>{pad(i)}</span>{c.t}</a></li>)}
+          </ol>
+        </details>
+      </div>
+    </nav>
+
+    <div>
+      <!-- ============ 00 FICHA ============ -->
+      <Chapter id="ficha" num="00" kicker="Lo esencial" title="Ficha rápida"
+        lede="Las cifras básicas del concello, para tenerlas a mano.">
+        <div class="stats cols-4">
+          <Stat value={n(ficha.poblacion)} countTo={ficha.poblacion} label="habitantes a 1 de enero de 2025" note="Padrón del INE" />
+          <Stat value={n(ficha.superficieKm2)} countTo={ficha.superficieKm2} decimals={2} unit="km²" label="de superficie" note="IGE. Otras fuentes dan 108,7 y 109,02" />
+          <Stat value={n(densidad, 1)} countTo={densidad} decimals={1} unit="hab/km²" label="de densidad de población" note={`Galicia: ≈ ${densidadGalicia}`} />
+          <Stat value={String(ficha.parroquias)} label="parroquias" note={`Capital: ${ficha.capital}`} />
+          <Stat value={n(ficha.altitudMaxima)} unit="m" label="de altitud máxima, en las cumbres do Castelo" note={`Fondo del valle: ≈ ${ficha.altitudValles} m`} />
+          <Stat value={`≈ ${n(ficha.distanciaSantiagoKm, 1)}`} unit="km" label="hasta Santiago en línea recta" note="Cálculo propio" />
+          <Stat value={`${n(ficha.coordenadas.lat, 2)}° N`} label={`${n(Math.abs(ficha.coordenadas.lon), 2)}° O`} note="Coordenadas" />
+          <Stat value={ficha.codigoINE} label="código del municipio en el INE" note={`CP ${ficha.codigosPostales.join(' y ')}`} />
+        </div>
+        <div class="grid-2 block">
+          <div class="prose">
+            <p class="dropcap">
+              <strong>Val do Dubra</strong> (en castellano, <em>Valle del Dubra</em>) es un concello de la provincia de A Coruña, en la comarca de Santiago. Linda con {ficha.limites.slice(0, -1).join(', ')} y {ficha.limites.at(-1)}. Su capital es <strong>Bembibre</strong> y su alcalde, desde 2023, {ficha.alcalde} ({ficha.alcaldePartido}).<Refs ids={['egu', 'wikipedia-en', 'concello-sede']} />
+            </p>
+            <p>
+              El nombre lo dice todo: es el <em>val</em>, el valle, del <strong>río Dubra</strong>, que cruza el municipio de norte a sur hasta unirse al Tambre.<Refs ids={['toponhisp']} />
+            </p>
+          </div>
+          <div class="callout">
+            <p><strong>Cómo leer esta web.</strong> Los números pequeños junto a cada dato (como <span class="refs"><a href={url('fuentes/#ine-padron')}>1</a></span>) enlazan a su fuente en el <a href={url('fuentes/')}>catálogo de fuentes</a>. Cuando dos fuentes no coinciden, lo indicamos. Todos los datos se pueden <a href={url('datos/')}>descargar</a> en JSON y CSV.</p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 01 TERRITORIO ============ -->
+      <Chapter id="territorio" num="01" kicker="Geografía" title="Un valle abierto por una falla"
+        lede="El Dubra corre por una fosa tectónica de la Depresión Meridiana, entre sierras de más de 400 metros.">
+        <div class="grid-2 wide-left">
+          <div class="prose">
+            <p>{datos.territorio.relieve}<Refs ids={['egu']} /></p>
+            <p>Los fondos de los valles están a unos <strong>250 m</strong>. Las cumbres do Castelo, a <strong>564 m</strong>, son los restos de antiguas superficies de erosión. Desde el <strong>Mirador do Picoto</strong>, a 525 m, el Dubra queda unos 300 m más abajo.<Refs ids={['egu', 'geocaching-picoto']} /></p>
+          </div>
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">Escalera de altitudes</div>
+              <div class="fig-sub">Metros sobre el nivel del mar</div>
+            </figcaption>
+            <HBars label="Altitudes de referencia en metros" items={datos.territorio.cotas.map((c) => ({ label: c.nombre, value: c.altitud, display: `${n(c.altitud)} m` }))} max={600} />
+            <SourceLine ids={datos.territorio.cotas.map((c) => c.fuente)} />
+          </figure>
+        </div>
+
+        <div class="block">
+          <h3>Los ríos</h3>
+          <div class="grid-cards">
+            {datos.territorio.rios.map((r) => (
+              <article class="card">
+                <span class="tag">Río</span>
+                <h3>{r.nombre}</h3>
+                <p>{r.descripcion}</p>
+              </article>
+            ))}
+          </div>
+          <SourceLine ids={['egu', 'toponhisp', 'paxinas-descubre']} />
+        </div>
+
+        <div class="block grid-2">
+          <div>
+            <h3 style="font-size:var(--step-2)">Vecinos de frontera</h3>
+            <p class="muted" style="margin:.5rem 0 1rem">Concellos que limitan con Val do Dubra<Refs ids={['egu']} /></p>
+            <ul class="grid-cards" style="list-style:none;padding:0;grid-template-columns:repeat(auto-fill,minmax(9rem,1fr))">
+              {ficha.limites.map((l) => <li class="card" style="padding:.8rem 1rem"><strong>{l}</strong></li>)}
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size:var(--step-2)">Cómo llegar</h3>
+            <p style="margin-top:.5rem;color:var(--ink-2)">
+              Bembibre está a unos {n(ficha.distanciaSantiagoKm, 1)} km de Santiago de Compostela en línea recta. El Concello publica las indicaciones por carretera.<Refs ids={['concello-como-chegar']} />
+            </p>
+            <p style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap">
+              <a class="btn btn-ghost" href={`https://www.openstreetmap.org/?mlat=${ficha.coordenadas.lat}&mlon=${ficha.coordenadas.lon}#map=12/${ficha.coordenadas.lat}/${ficha.coordenadas.lon}`} rel="noopener">Abrir mapa (OpenStreetMap) ↗</a>
+              <a class="btn btn-ghost" href="https://www.aemet.es/es/eltiempo/prediccion/municipios/val-do-dubra-bembibre-id15088" rel="noopener">El tiempo (AEMET) ↗</a>
+            </p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 02 POBLACIÓN ============ -->
+      <Chapter id="poblacion" num="02" kicker="Demografía" title="Menos vecinos, más años"
+        lede={`En 1950 vivían en el valle ${n(maxHist.valor)} personas. Hoy son ${n(ultimo.valor)}, un ${n(perdidaDesdeMax, 0)} % menos.`}>
+        <figure class="figure fade">
+          <figcaption>
+            <div class="fig-title">Población de Val do Dubra, 1887-2025</div>
+            <div class="fig-sub">Habitantes en censos y padrones. Pasa el cursor o el foco por cada año.</div>
+          </figcaption>
+          <LineChart
+            title={`Gráfico de línea: la población pasa de ${n(pob.historica[0].valor)} en ${pob.historica[0].anio} a un máximo de ${n(maxHist.valor)} en ${maxHist.anio} y baja hasta ${n(ultimo.valor)} en ${ultimo.anio}.`}
+            points={pob.historica.map((p) => ({ x: p.anio, y: p.valor, note: p.nota }))}
+            yMax={8000}
+            yTicks={[0, 2000, 4000, 6000, 8000]}
+            xTicks={[1887, 1950, 1981, 2001, 2025]}
+          />
+          <DataTable caption="Población histórica" head={['Año', 'Habitantes', 'Fuente']} align={['l', 'r', 'l']}
+            rows={pob.historica.map((p) => [p.anio, n(p.valor), fuentes.find((f) => f.id === p.fuente)!.organismo])} />
+          <SourceLine ids={pob.historica.map((p) => p.fuente)} nota="Para 1981, City Population da 7.035 habitantes. Usamos la serie coherente con la Enciclopedia Galega" />
+        </figure>
+
+        <div class="block">
+          <h3>Cinco etapas demográficas</h3>
+          <p class="block-intro">La EGU divide la historia demográfica del valle en ciclos marcados por la emigración.<Refs ids={['egu']} /></p>
+          <div class="grid-cards">
+            {pob.tendencias.map((t) => (
+              <article class="card">
+                <span class="tag">{t.periodo}</span>
+                <p class="stat-value" style={`color:${t.tasaAnual === null || t.tasaAnual > 0 ? 'var(--moss)' : 'var(--clay-ink)'}`}>
+                  {t.tasaAnual === null ? '↑' : `${t.tasaAnual > 0 ? '+' : '−'}${n(Math.abs(t.tasaAnual), 2)} %`}
+                </p>
+                <p>{t.tasaAnual === null ? t.causa : `al año · ${t.causa}`}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="block grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">El siglo XXI, año a año</div>
+              <div class="fig-sub">Padrón municipal, 2000-2025</div>
+            </figcaption>
+            <LineChart
+              title={`Gráfico de línea: el padrón baja de ${n(pob.padron[0].valor)} habitantes en 2000 a ${n(ultimo.valor)} en 2025.`}
+              points={pob.padron.map((p) => ({ x: p.anio, y: p.valor }))}
+              yMax={6000}
+              yTicks={[0, 2000, 4000, 6000]}
+              xTicks={[2000, 2010, 2020, 2025]}
+              height={300}
+              width={440}
+            />
+            <DataTable caption="Padrón 2000-2025" head={['Año', 'Habitantes']} align={['l', 'r']} rows={pob.padron.map((p) => [p.anio, n(p.valor)])} />
+            <SourceLine ids={pob.padronFuentes} />
+          </figure>
+          <div>
+            <h3 style="font-size:var(--step-2)">¿Quién vive en el valle?</h3>
+            <p class="muted" style="margin:.5rem 0 1.25rem">Estructura por edades (total: {n(est.total)})<Refs ids={est.fuentes} /></p>
+            <HBars label="Población por grupos de edad"
+              items={est.edades.map((e, i) => ({ label: e.grupo, value: e.valor, display: `${n(e.valor)} · ${pct(e.valor, est.total)} %`, alt: i === 2 }))} />
+            <div class="stats" style="margin-top:1.5rem">
+              <Stat value={n(est.edadMedia, 1)} unit="años" label="de edad media" />
+              <Stat value={pct(est.mujeres, est.total)} unit="%" label={`son mujeres (${n(est.mujeres)})`} />
+              <Stat value={n(est.indiceEnvejecimiento, 0)} label="índice de envejecimiento" note="Mayores de 64 por cada 100 menores de 20 (IGE)" />
+              <Stat value={n(est.extranjeros)} label={`vecinos extranjeros (${pct(est.extranjeros, est.total)} %)`} />
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>El saldo natural: {mn.anio}</h3>
+          <div class="grid-2">
+            <div class="stats">
+              <Stat value={String(mn.nacimientos)} label="nacimientos" />
+              <Stat value={String(mn.defunciones)} label="defunciones" />
+              <Stat value={`−${Math.abs(mn.saldo)}`} label="saldo vegetativo" />
+              <Stat value={n(mn.hijosPorMujer2023, 2)} label="hijos por mujer (2023)" />
+            </div>
+            <p class="pull">Por cada bebé que nace en el valle mueren <em>{n(mn.defunciones / mn.nacimientos, 1)} personas</em>.<cite>Movimiento natural de {mn.anio}, IGE. Tasa de natalidad de 2023: {n(mn.tasaNatalidad2023, 2)} ‰; de mortalidad: {n(mn.tasaMortalidad2023, 2)} ‰.</cite></p>
+          </div>
+        </div>
+
+        <div class="block grid-2">
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">Bembibre, la excepción</h3>
+            <p>Mientras el concello pierde vecinos, su capital gana: Bembibre pasó de <strong>{n(bembibre0.valor)}</strong> habitantes en {bembibre0.anio} a <strong>{n(bembibre1.valor)}</strong> en {bembibre1.anio} (+{n(crecBembibre, 1)} %). En ese tiempo el municipio cayó un {n(Math.abs(caidaConcello), 1)} %. Hoy casi <strong>uno de cada tres vecinos ({n(pesoBembibre, 0)} %)</strong> vive en la capital.<Refs ids={pob.nucleosFuentes} /></p>
+            <p class="muted small">Datos de núcleo de población del Nomenclátor, no de parroquia. Portomouro de Abaixo, por ejemplo, bajó de 228 a 200 vecinos entre 2010 y 2023.</p>
+          </div>
+          <figure class="figure">
+            <figcaption><div class="fig-title">Habitantes del núcleo de Bembibre</div></figcaption>
+            <HBars label="Habitantes de Bembibre por año" items={bembibre.map((b) => ({ label: String(b.anio), value: b.valor }))} max={1300} />
+            <SourceLine ids={pob.nucleosFuentes} />
+          </figure>
+        </div>
+      </Chapter>
+
+      <!-- ============ 03 DIÁSPORA ============ -->
+      <Chapter id="diaspora" num="03" kicker="Emigración" title="El valle que vive fuera"
+        lede="La emigración marca la historia de Val do Dubra. Hoy, casi la mitad de sus electores vive en el extranjero.">
+        <div class="grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">Censo electoral, 1 de enero de 2026</div>
+              <div class="fig-sub">Cada cuadro es un 1 % de los {n(ce.total)} electores</div>
+            </figcaption>
+            <div class="waffle" role="img" aria-label={`${n(100 - ceraPct, 0)} % de electores residentes y ${n(ceraPct, 0)} % residentes en el extranjero`}>
+              {Array.from({ length: 100 }, (_, i) => <i class={i >= 100 - waffleB ? 'b' : undefined}></i>)}
+            </div>
+            <div class="legend">
+              <span><i style="background:var(--river)"></i>Residentes en el concello (CER): {n(ce.residentes)}</span>
+              <span><i style="background:var(--clay)"></i>Residentes en el extranjero (CERA): {n(ce.residentesAusentes)}</span>
+            </div>
+            <SourceLine ids={ce.fuentes} nota={`En 2015 había ${n(ce.total2015)} electores`} />
+          </figure>
+          <div>
+            <p class="pull">El <em>{n(ceraPct, 0)} %</em> de quienes pueden votar en Val do Dubra vive fuera de España.<cite>Censo electoral de residentes ausentes (CERA), 2026.</cite></p>
+            <div class="stats" style="margin-top:2rem">
+              <Stat value={n(datos.emigracion.emigrantes2005)} label="emigrantes registrados en 2005" note={`${datos.emigracion.rankingGalicia2005}.º concello gallego en número de emigrantes`} />
+              <Stat value={`${datos.emigracion.porcentaje1986} %`} label={`de la población estaba emigrada en 1986 (${n(datos.emigracion.emigrantes1986)} personas)`} />
+            </div>
+            <p style="margin-top:1.25rem;color:var(--ink-2)">Destinos principales: {datos.emigracion.destinos.join(', ')}. En 1984 Bembibre levantó un monumento al emigrante, y cada agosto la <strong>Festa do Emigrante</strong> recuerda a quienes se fueron.<Refs ids={datos.emigracion.fuentes} /></p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 04 PARROQUIAS ============ -->
+      <Chapter id="parroquias" num="04" kicker="Organización territorial" title="Doce parroquias"
+        lede="La parroquia es la unidad básica del territorio gallego. Val do Dubra tiene doce.">
+        <div class="grid-cards">
+          {datos.parroquias.map((p, i) => (
+            <article class="card parish">
+              <span class="idx" aria-hidden="true">{pad(i + 1)}</span>
+              <h3>{p.nombre}</h3>
+              {p.advocacion && <p class="adv">{p.advocacion}</p>}
+              <p>{p.destacado}</p>
+            </article>
+          ))}
+        </div>
+        <SourceLine ids={datos.parroquiasFuentes} nota="Advocación solo cuando aparece en las fuentes consultadas" />
+      </Chapter>
+
+      <!-- ============ 05 HISTORIA ============ -->
+      <Chapter id="historia" num="05" kicker="Cronología" title="De los castros a hoy"
+        lede="Veintidós siglos de ocupación humana, un cambio de nombre y dos escudos.">
+        <ol class="timeline">
+          {datos.historia.map((h) => (
+            <li class="fade">
+              <div class="when">{h.fecha}</div>
+              <div>
+                <h3>{h.titulo}</h3>
+                <p>{h.texto}<Refs ids={h.fuentes} /></p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <div class="block grid-2">
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">El nombre</h3>
+            <p><strong>Val</strong> viene del latín <em>vallem</em>, «valle». <strong>Dubra</strong> es un hidrónimo celta: el nombre del río y de la medieval <em>terra de Dubra</em>.<Refs ids={['toponhisp']} /></p>
+          </div>
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">El escudo</h3>
+            <p>El escudo actual, de 2009, es de azur con ondas de plata y azur, un sarcófago de plata con un rayo de luz y una estrella de seis puntas, y corona real cerrada. El de 1981 llevaba un arca de plata y un cometa invertido.<Refs ids={['heraldry', 'boe-escudo-1981']} /></p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 06 ECONOMÍA ============ -->
+      <Chapter id="economia" num="06" kicker="Economía y servicios" title="Del campo a los servicios"
+        lede={eco.texto}>
+        <div class="stats cols-3">
+          <Stat value={n(renta23.bruta)} countTo={renta23.bruta} unit="€" label="renta bruta media por declaración (2023)" note={`+${n(subidaRenta, 1)} % sobre 2022`} />
+          <Stat value={n(renta23.disponible)} unit="€" label="renta disponible media (2023)" />
+          <Stat value={`${n(renta23.rankingGalicia!)}.º`} label="puesto en Galicia por renta bruta media" note={`${n(renta23.rankingEspana!)}.º de España`} />
+          <Stat value={n(eco.afiliaciones.valor)} label="afiliados a la Seguridad Social (julio de 2025)" />
+          <Stat value={String(eco.paroRegistrado.valor)} label={`personas en paro registrado (${eco.paroRegistrado.anio})`} />
+          <Stat value={String(eco.empresas.valor)} label="empresas en directorios comerciales" note="No es un registro oficial" />
+        </div>
+        <SourceLine ids={['aeat-irpf-2023', 'aeat-irpf-2022', 'ige-ficha', 'iberinform']} />
+
+        <div class="block grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">¿En qué trabajaban los vecinos?</div>
+              <div class="fig-sub">Personas ocupadas por sector, {eco.empleoSectores.periodo}</div>
+            </figcaption>
+            <HBars label="Ocupados por sector" items={eco.empleoSectores.datos.map((d) => ({ label: d.sector, value: d.valor }))} />
+            <SourceLine ids={[eco.empleoSectores.fuente]} nota="Dato antiguo, útil como referencia histórica" />
+          </figure>
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">Un cambio de época</h3>
+            <p>En 2001 el sector primario ocupaba al <strong>{n(eco.empleo2001.primario, 1)} %</strong> de los trabajadores. Diez años antes era casi el <strong>50 %</strong>. La tasa de actividad era del {n(eco.empleo2001.tasaActividad, 1)} % y la de paro, del {n(eco.empleo2001.tasaParo, 1)} %.<Refs ids={['egu']} /></p>
+            <p>Hoy la economía sigue ligada al vacuno de leche y de carne, mientras que Bembibre concentra los servicios. La renta bruta media subió de {n(renta22.bruta)} € en 2022 a {n(renta23.bruta)} € en 2023.<Refs ids={['oficina-economica', 'aeat-irpf-2022', 'aeat-irpf-2023']} /></p>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>Escuelas y servicios</h3>
+          <div class="grid-2">
+            <figure class="figure">
+              <figcaption><div class="fig-title">Alumnado matriculado ({datos.educacion.anio})</div></figcaption>
+              <HBars label="Alumnado por etapa" items={datos.educacion.alumnado.map((a) => ({ label: a.nivel, value: a.valor }))} />
+              <SourceLine ids={['ige-ficha']} />
+            </figure>
+            <div class="grid-cards" style="grid-template-columns:1fr">
+              {datos.educacion.centros.map((c) => (
+                <article class="card">
+                  <h3>{c.nombre}</h3>
+                  <p>{c.descripcion}<Refs ids={[c.fuente]} /></p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 07 POLÍTICA ============ -->
+      <Chapter id="politica" num="07" kicker="Política" title="Once concejales"
+        lede="La corporación municipal salida de las elecciones del 28 de mayo de 2023.">
+        <div class="grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">Reparto de concejales, 2023</div>
+              <div class="fig-sub">{n(m23.votosValidos)} votos válidos · abstención del {n(m23.abstencion, 2)} %</div>
+            </figcaption>
+            <Hemicycle title={`Hemiciclo: ${conEscano.map((p) => `${p.siglas} ${p.concejales}`).join(', ')}`}
+              parties={conEscano.map((p) => ({ siglas: p.siglas, concejales: p.concejales, color: partyColor[p.siglas] }))} />
+            <div class="legend">
+              {conEscano.map((p) => <span><i style={`background:${partyColor[p.siglas]}`}></i>{p.siglas}: {p.concejales} ({p.porcentaje} %)</span>)}
+            </div>
+            <SourceLine ids={m23.fuentes} />
+          </figure>
+          <div class="prose">
+            <p>{m23.nota}<Refs ids={['eldiario-28m', 'wikipedia-en']} /></p>
+            <p>Desde el 22 de junio de 2023, una resolución de Alcaldía reparte las competencias entre los concejales del gobierno municipal.<Refs ids={['concello-sede']} /></p>
+            <p class="small muted">El BNG y el Partido Galego se presentaron pero no obtuvieron representación. Para los resultados oficiales, consulta el Ministerio del Interior.<Refs ids={['infoelectoral', 'adiante-2023']} /></p>
+          </div>
+        </div>
+        <div class="block">
+          <h3>Así vota el valle en las generales</h3>
+          <p class="block-intro">Porcentaje de voto al Congreso en Val do Dubra, 2019 y 2023.<Refs ids={pol.generalesFuentes} /></p>
+          <div class="grid-cards">
+            {(['PP', 'PSdeG-PSOE', 'BNG'] as const).map((p) => (
+              <article class="card">
+                <h3>{p}</h3>
+                <HBars compact label={`Voto a ${p} en las generales`} max={70}
+                  items={pol.generales.map((g, i) => ({ label: String(g.anio), value: g[p], display: `${n(g[p], 1)} %`, alt: i === 0 }))} />
+              </article>
+            ))}
+            <article class="card">
+              <h3>Participación</h3>
+              <HBars compact label="Participación en las generales" max={100}
+                items={pol.generales.map((g, i) => ({ label: String(g.anio), value: g.participacion, display: `${n(g.participacion, 2)} %`, alt: i === 0 }))} />
+            </article>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--clay)"></i>2019</span>
+            <span><i style="background:var(--river)"></i>2023</span>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 08 PATRIMONIO ============ -->
+      <Chapter id="patrimonio" num="08" kicker="Patrimonio y naturaleza" title="Piedra, agua y carballeiras"
+        lede="Puentes medievales, castros, sarcófagos labrados en la roca y rutas junto al río.">
+        <div class="grid-cards">
+          {datos.patrimonio.map((p) => (
+            <article class="card">
+              <span class="tag">{p.tipo}</span>
+              <h3>{p.nombre}</h3>
+              <p>{p.texto}<Refs ids={p.fuentes} /></p>
+              {p.parroquia && <p class="meta">Parroquia: {p.parroquia}</p>}
+            </article>
+          ))}
+        </div>
+        <div class="block">
+          <h3>Naturaleza y rutas</h3>
+          <div class="grid-cards">
+            {datos.naturaleza.map((r) => (
+              <article class="card">
+                <span class="tag">{r.tipo}</span>
+                <h3>{r.nombre}</h3>
+                <p>{r.texto}<Refs ids={r.fuentes} /></p>
+                {('dificultad' in r && r.dificultad) && <p class="meta">Dificultad: {r.dificultad}{r.distanciaKm ? ` · ${r.distanciaKm} km` : ''}</p>}
+              </article>
+            ))}
+          </div>
+          <p style="margin-top:1.25rem"><a class="btn btn-ghost" href="https://valdodubra.gal/rutas-de-sendeirismo/" rel="noopener">Rutas de senderismo del Concello ↗</a></p>
+        </div>
+      </Chapter>
+
+      <!-- ============ 09 FIESTAS ============ -->
+      <Chapter id="fiestas" num="09" kicker="Calendario" title="Un año de fiestas"
+        lede="De la vaca cachena de abril al magosto de noviembre. Las fechas cambian cada año: confírmalas con el Concello.">
+        <ol class="calendar">
+          {datos.fiestas.map((f) => (
+            <li>
+              <span class="mes">{f.mes}</span>
+              <h3>{f.nombre}</h3>
+              <p>{f.texto}<Refs ids={f.fuentes} /></p>
+            </li>
+          ))}
+        </ol>
+      </Chapter>
+
+      <!-- ============ 10 CURIOSIDADES ============ -->
+      <Chapter id="curiosidades" num="10" kicker="¿Sabías que…?" title="Curiosidades en cifras"
+        lede="Los datos, leídos de otra manera.">
+        <div class="facts">
+          <div class="fact fade"><span class="big">{n(mayoresPorNino, 1)}</span><p>vecinos de 65 años o más por cada niño menor de 15.<Refs ids={['ige-ficha']} /></p></div>
+          <div class="fact fade"><span class="big">1836</span><p>Año de fundación del concello, que se llamó <strong>Buján</strong> hasta 1960 por la parroquia donde estaba la casa consistorial.<Refs ids={['toponhisp']} /></p></div>
+          <div class="fact fade"><span class="big">{n(campos)}</span><p>campos de fútbol cabrían en el concello ({n(ficha.superficieKm2)} km²).</p></div>
+          <div class="fact fade"><span class="big">≈ 1/3</span><p>de la densidad media de Galicia: {n(densidad, 1)} hab/km² frente a unos {densidadGalicia}.</p></div>
+          <div class="fact fade"><span class="big">2.100+</span><p>años tiene el castro sobre el que se levanta el Castelo de Portomeiro (siglo II a. C.).<Refs ids={['paxinas-castelo']} /></p></div>
+          <div class="fact fade"><span class="big">3</span><p>sarcófagos antropomorfos labrados en un mismo bloque de granito: la Pedra do Home.<Refs ids={['paxinas-descubre']} /></p></div>
+          <div class="fact fade"><span class="big">≈ 4.600</span><p>habitantes tenía el concello en 1887, y casi los mismos en 2007: más de un siglo de subidas y bajadas para volver al punto de partida.<Refs ids={['egu']} /></p></div>
+          <div class="fact fade"><span class="big">+{n(subidaRenta, 0)} %</span><p>subió la renta bruta media en un solo año, de 2022 a 2023.<Refs ids={['aeat-irpf-2022', 'aeat-irpf-2023']} /></p></div>
+          <div class="fact fade"><span class="big">30+</span><p>ediciones de la Festa da Cervexa de Bembibre.<Refs ids={['paxinas-fiestas']} /></p></div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 11 FUENTES ============ -->
+      <Chapter id="fuentes" num="11" kicker="Transparencia" title="De dónde salen los datos"
+        lede={`Esta web cita ${fuentes.length} fuentes públicas: organismos oficiales, enciclopedias, estadísticas, prensa y guías locales.`}>
+        <div class="stats cols-3">
+          {Object.entries(fuentes.reduce<Record<string, number>>((acc, f) => ((acc[f.tipo] = (acc[f.tipo] ?? 0) + 1), acc), {}))
+            .sort((a, b) => b[1] - a[1])
+            .map(([tipo, c]) => <Stat value={String(c)} label={tipos[tipo] ?? tipo} />)}
+        </div>
+        <p style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
+          <a class="btn btn-primary" href={url('fuentes/')}>Catálogo completo de fuentes</a>
+          <a class="btn btn-ghost" href={url('datos/')}>Descargar los datos</a>
+        </p>
+      </Chapter>
+    </div>
+  </div>
+</Base>
