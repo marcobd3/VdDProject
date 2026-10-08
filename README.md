@@ -34,19 +34,19 @@ Para **añadir o corregir un dato**, edita `src/data/datos.json`. Para añadir u
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321/VdDProject/
+npm run dev      # http://localhost:4321/
 npm run build    # genera dist/
 npm run preview
 ```
 
 ## Publicación
 
-El workflow `.github/workflows/deploy.yml` publica en GitHub Pages cada push a `main`. Hay que activar Pages con «GitHub Actions» como origen en *Settings → Pages*.
+Se publica en **Vercel** (https://vd-d-project.vercel.app). Vercel detecta Astro automáticamente: comando `npm run build`, carpeta de salida `dist` y Node 22.12 o superior (fijado en `package.json`). Cada push a `main` despliega la web.
 
-Para otro dominio:
+La URL canónica se toma de `VERCEL_PROJECT_PRODUCTION_URL`. Para otro dominio o una subcarpeta:
 
 ```bash
-SITE_URL=https://midominio.gal BASE_PATH=/ npm run build
+SITE_URL=https://midominio.gal BASE_PATH=/subcarpeta npm run build
 ```
 
 ## Fuentes
