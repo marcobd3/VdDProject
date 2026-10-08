@@ -46,7 +46,7 @@ document.querySelectorAll<HTMLElement>('.chart-wrap').forEach((wrap) => {
 
 // --- Aparición y contadores ---
 const fmt = (v: number, dec: number) =>
-  new Intl.NumberFormat('es-ES', { useGrouping: 'always', minimumFractionDigits: dec, maximumFractionDigits: dec } as Intl.NumberFormatOptions).format(v);
+  new Intl.NumberFormat(root.lang || 'gl', { useGrouping: 'always', minimumFractionDigits: dec, maximumFractionDigits: dec } as Intl.NumberFormatOptions).format(v);
 
 const contar = (el: HTMLElement) => {
   const fin = Number(el.dataset.count);

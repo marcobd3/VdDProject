@@ -1,14 +1,16 @@
 ---
-import { fuente, url } from '../lib/datos';
+import { fuente } from '../lib/datos';
+import { useI18n } from '../i18n';
 interface Props { ids: string[]; nota?: string }
 const { ids, nota } = Astro.props;
+const { t, tr, href } = useI18n(Astro.url);
 const lista = [...new Set(ids)].map(fuente);
 ---
 <p class="source-line">
-  <span>Fuente{lista.length > 1 ? 's' : ''}: </span>
+  <span>{t.comun.fonteLinea(lista.length)}: </span>
   {lista.map((f, i) => (
     <>
-      <a href={url(`fuentes/#${f.id}`)}>{f.organismo}</a>{i < lista.length - 1 ? ' · ' : ''}
+      <a href={href(`fuentes/#${f.id}`)}>{tr(f.organismo)}</a>{i < lista.length - 1 ? ' · ' : ''}
     </>
   ))}
   {nota && <span>. {nota}</span>}

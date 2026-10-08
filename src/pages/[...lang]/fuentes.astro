@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import { datos, fuentes, numFuente } from '../../lib/datos';
+import { langPaths, useI18n } from '../../i18n';
+
+export const getStaticPaths = langPaths;
+
+const { t, tr, data, href } = useI18n(Astro.url);
+const T = t.fontesPax;
+const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+const conteo = fuentes.reduce<Record<string, number>>((a, f) => ((a[f.tipo] = (a[f.tipo] ?? 0) + 1), a), {});
+---
+<Base title={T.titulo} current="fuentes" description={T.descricion(fuentes.length)}>
+  <div class="wrap" style="padding-block:clamp(2.5rem,5vw,4.5rem) 4rem">
+    <header class="chapter-head" style="margin-bottom:2rem">
+      <div class="chapter-num" aria-hidden="true">§</div>
+      <div>
+        <p class="kicker">{t.comun.transparencia}</p>
+        <h1 style="font-size:var(--step-4);margin-top:.35rem">{T.titulo}</h1>
+        <p class="lede" style="margin-top:1rem;max-width:56ch">{T.lede}</p>
+      </div>
+    </header>
+
+    <div class="filters" role="search">
+      <label for="q" class="sr-only">{T.buscar}</label>
+      <input id="q" type="search" placeholder={T.exemplo} data-sources-q autocomplete="off" />
+      <div role="group" aria-label={T.filtrar} style="display:flex;flex-wrap:wrap;gap:.5rem">
+        <button class="chip" type="button" data-tipo="todos" aria-pressed="true">{T.todas(fuentes.length)}</button>
+        {Object.entries(conteo).map(([tipo, c]) => <button class="chip" type="button" data-tipo={tipo} aria-pressed="false">{t.tipos[tipo]} ({c})</button>)}
+      </div>
+    </div>
+    <p class="small muted" aria-live="polite" style="margin-bottom:1rem"><span data-sources-count>{fuentes.length}</span> {T.visibles}</p>
+
+    <ol class="source-list" data-sources>
+      {fuentes.map((f) => (
+        <li class="source-item" id={f.id} data-item data-tipo-item={f.tipo}
+          data-text={norm(`${tr(f.nombre)} ${tr(f.organismo)} ${f.temas.map((x) => t.temas[x] ?? x).join(' ')} ${tr(f.nota)}`)}>
+          <span class="sid">{numFuente(f.id)}</span>
+          <div>
+            <h2><a href={f.url} rel="noopener">{tr(f.nombre)} <span aria-hidden="true">↗</span></a></h2>
+            <p class="org">{tr(f.organismo)}</p>
+            {tr(f.nota) && <p class="note">{tr(f.nota)}</p>}
+          </div>
+          <div class="badges">
+            <span class={`badge ${f.tipo}`}>{t.tipos[f.tipo]}</span>
+            {f.temas.map((x) => <span class="badge">{t.temas[x] ?? x}</span>)}
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <section class="block" aria-labelledby="ampliar">
+      <h2 id="ampliar" class="h-section" style="font-size:var(--step-3)">{T.ampliar}</h2>
+      <p class="block-intro" style="margin-top:.5rem">{T.ampliarIntro}</p>
+      <div class="grid-cards">
+        {datos.fuentesParaAmpliar.map((f) => (
+          <a class="card" href={f.url} rel="noopener" style="text-decoration:none">
+            <span class="tag">{tr(f.organismo)}</span>
+            <h3 style="font-size:var(--step-1)">{tr(f.nombre)} ↗</h3>
+            <p>{tr(f.uso)}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="block callout" aria-label={T.metodoAria}>
+      <p set:html={T.metodo({ nota: tr(datos.meta.nota), data: data(datos.meta.actualizado), datos: href('datos/') })} />
+    </section>
+  </div>
+</Base>

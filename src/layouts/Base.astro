@@ -5,14 +5,18 @@ import '@fontsource-variable/inter';
 import '../styles/global.css';
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import { url, datos } from '../lib/datos';
+import { href as hrefLang, langs, langNames, ogLocales, switchHref, useI18n } from '../i18n';
 
 interface Props {
   title: string;
   description: string;
   current?: 'inicio' | 'fuentes' | 'datos';
   jsonLd?: Record<string, unknown>[];
+  /** false na páxina 404, que non ten versións noutros idiomas */
+  alternates?: boolean;
 }
-const { title, description, current, jsonLd = [] } = Astro.props;
+const { title, description, current, jsonLd = [], alternates = true } = Astro.props;
+const { lang, t, href, data } = useI18n(Astro.url);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(url('og.png'), Astro.site);
 const fullTitle = current === 'inicio' ? title : `${title} · Val do Dubra en datos`;
@@ -21,27 +25,30 @@ const ld = [
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Val do Dubra en datos',
-    url: new URL(url(''), Astro.site).href,
-    inLanguage: 'es',
+    url: new URL(href(''), Astro.site).href,
+    inLanguage: lang,
   },
   ...jsonLd,
 ];
 ---
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {alternates && langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(switchHref(Astro.url, l), Astro.site)} />)}
+    {alternates && <link rel="alternate" hreflang="x-default" href={new URL(switchHref(Astro.url, 'gl'), Astro.site)} />}
     <meta name="theme-color" content="#f6f2e9" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121613" media="(prefers-color-scheme: dark)" />
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
     <link rel="sitemap" href={url('sitemap-index.xml')} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale" content={ogLocales[lang]} />
+    {langs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocales[l]} />)}
     <meta property="og:site_name" content="Val do Dubra en datos" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -63,23 +70,32 @@ const ld = [
     {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
   </head>
   <body>
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <a class="skip-link" href="#contenido">{t.comun.saltar}</a>
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href={url('')} aria-label="Val do Dubra en datos, inicio">
+        <a class="brand" href={href('')} aria-label={t.comun.marcaAria}>
           <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
             <path d="M4 26c5-1 6-6 10-7s6 2 9-1 2-8 5-12" />
             <path d="M4 20c4 0 5-3 8-4" opacity=".45" />
           </svg>
           <span>Val do Dubra <em class="long">en datos</em></span>
         </a>
-        <nav class="site-nav" aria-label="Principal">
-          <a href={url('')} aria-current={current === 'inicio' ? 'page' : undefined} class="hide-sm">Inicio</a>
-          <a href={url('fuentes/')} aria-current={current === 'fuentes' ? 'page' : undefined}>Fuentes</a>
-          <a href={url('datos/')} aria-current={current === 'datos' ? 'page' : undefined}>Datos</a>
-          <button class="theme-toggle" type="button" aria-label="Cambiar tema claro u oscuro" data-theme-toggle>
+        <nav class="site-nav" aria-label={t.comun.navAria}>
+          <a href={href('')} aria-current={current === 'inicio' ? 'page' : undefined} class="hide-sm">{t.comun.inicio}</a>
+          <a href={href('fuentes/')} aria-current={current === 'fuentes' ? 'page' : undefined}>{t.comun.fontes}</a>
+          <a href={href('datos/')} aria-current={current === 'datos' ? 'page' : undefined}>{t.comun.datos}</a>
+          <button class="theme-toggle" type="button" aria-label={t.comun.tema} data-theme-toggle>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
           </button>
+          <ul class="lang-switch" role="list" aria-label={t.comun.idioma}>
+            {langs.map((l) => (
+              <li>
+                <a href={alternates ? switchHref(Astro.url, l) : hrefLang('', l)}
+                  hreflang={l} lang={l} aria-label={langNames[l]} title={langNames[l]}
+                  aria-current={l === lang ? 'true' : undefined}>{l.toUpperCase()}</a>
+              </li>
+            ))}
+          </ul>
         </nav>
       </div>
     </header>
@@ -91,26 +107,24 @@ const ld = [
         <div>
           <h2>Val do Dubra <em>en datos</em></h2>
           <p style="margin-top:.75rem;max-width:46ch">
-            Un proyecto de divulgación para vecinos y curiosos. Reúne datos públicos del concello en un solo sitio y cita siempre su fuente.
-            No es una web oficial del Concello de Val do Dubra.
+            {t.comun.pe}
           </p>
-          <p class="small muted" style="margin-top:.75rem">Última revisión de los datos: <time datetime={datos.meta.actualizado}>8 de octubre de 2026</time>.</p>
+          <p class="small muted" style="margin-top:.75rem">{t.comun.revision} <time datetime={datos.meta.actualizado}>{data(datos.meta.actualizado)}</time>.</p>
         </div>
         <div>
-          <h3 class="kicker" style="margin-bottom:.75rem">Explorar</h3>
+          <h3 class="kicker" style="margin-bottom:.75rem">{t.comun.explorar}</h3>
           <ul>
-            <li><a href={url('#territorio')}>Territorio</a></li>
-            <li><a href={url('#poblacion')}>Población</a></li>
-            <li><a href={url('#historia')}>Historia</a></li>
-            <li><a href={url('#curiosidades')}>Curiosidades</a></li>
+            {(['territorio', 'poblacion', 'historia', 'curiosidades'] as const).map((id) => (
+              <li><a href={href(`#${id}`)}>{t.inicio.capitulos[id]}</a></li>
+            ))}
           </ul>
         </div>
         <div>
-          <h3 class="kicker" style="margin-bottom:.75rem">Transparencia</h3>
+          <h3 class="kicker" style="margin-bottom:.75rem">{t.comun.transparencia}</h3>
           <ul>
-            <li><a href={url('fuentes/')}>Catálogo de fuentes</a></li>
-            <li><a href={url('datos/')}>Descargar los datos</a></li>
-            <li><a href="https://valdodubra.gal/" rel="noopener">Web del Concello ↗</a></li>
+            <li><a href={href('fuentes/')}>{t.comun.catalogo}</a></li>
+            <li><a href={href('datos/')}>{t.comun.descargar}</a></li>
+            <li><a href="https://valdodubra.gal/" rel="noopener">{t.comun.webConcello}</a></li>
           </ul>
         </div>
       </div>

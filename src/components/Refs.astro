@@ -1,12 +1,14 @@
 ---
-import { fuente, numFuente, url } from '../lib/datos';
+import { fuente, numFuente } from '../lib/datos';
+import { useI18n } from '../i18n';
 interface Props { ids: string[] }
 const { ids } = Astro.props;
+const { t, tr, href } = useI18n(Astro.url);
 const unicos = [...new Set(ids)].sort((a, b) => numFuente(a) - numFuente(b));
 ---
 <span class="refs">
   {unicos.map((id) => {
     const f = fuente(id);
-    return <a href={url(`fuentes/#${id}`)} title={`${f.nombre} — ${f.organismo}`} aria-label={`Fuente ${numFuente(id)}: ${f.nombre}`}>{numFuente(id)}</a>;
+    return <a href={href(`fuentes/#${id}`)} title={`${tr(f.nombre)} — ${tr(f.organismo)}`} aria-label={t.comun.fonteN(numFuente(id), tr(f.nombre))}>{numFuente(id)}</a>;
   })}
 </span>

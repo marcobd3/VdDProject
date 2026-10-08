@@ -1,0 +1,558 @@
+---
+import Base from '../../layouts/Base.astro';
+import Chapter from '../../components/Chapter.astro';
+import Stat from '../../components/Stat.astro';
+import Refs from '../../components/Refs.astro';
+import SourceLine from '../../components/SourceLine.astro';
+import LineChart from '../../components/LineChart.astro';
+import Hemicycle from '../../components/Hemicycle.astro';
+import HBars from '../../components/HBars.astro';
+import DataTable from '../../components/DataTable.astro';
+import { datos, fuente, fuentes, url } from '../../lib/datos';
+import { langPaths, useI18n } from '../../i18n';
+
+export const getStaticPaths = langPaths;
+
+const { lang, t, tr, n, pct, pc, lista, href } = useI18n(Astro.url);
+const T = t.inicio;
+const { ficha, poblacion: pob, economia: eco, politica: pol } = datos;
+
+// --- Cálculos derivados (todo a partir de datos.json) ---
+const maxHist = pob.historica.reduce((a, b) => (b.valor > a.valor ? b : a));
+const ultimo = pob.padron[pob.padron.length - 1];
+const perdidaDesdeMax = ((maxHist.valor - ultimo.valor) / maxHist.valor) * 100;
+const est = pob.estructura;
+const [ninos, , mayores] = est.edades.map((e) => e.valor);
+const mayoresPorNino = mayores / ninos;
+const mn = pob.movimientoNatural;
+const ce = pob.censoElectoral;
+const ceraPct = (ce.residentesAusentes / ce.total) * 100;
+const waffleB = Math.round(ceraPct);
+const bembibre = pob.nucleos[0].serie;
+const bembibre0 = bembibre[0], bembibre1 = bembibre[bembibre.length - 1];
+const padron2010 = pob.padron.find((p) => p.anio === 2010)!;
+const padronBembibreAnio = pob.padron.find((p) => p.anio === bembibre1.anio)!;
+const crecBembibre = ((bembibre1.valor - bembibre0.valor) / bembibre0.valor) * 100;
+const caidaConcello = ((padronBembibreAnio.valor - padron2010.valor) / padron2010.valor) * 100;
+const pesoBembibre = (bembibre1.valor / padronBembibreAnio.valor) * 100;
+const [renta22, renta23] = eco.renta;
+const subidaRenta = ((renta23.bruta - renta22.bruta) / renta22.bruta) * 100;
+const m23 = pol.municipales2023;
+const partyColor: Record<string, string> = { PP: 'var(--party-1)', 'PSdeG-PSOE': 'var(--party-2)', Anova: 'var(--party-3)' };
+const conEscano = m23.partidos.filter((p) => p.concejales > 0);
+const densidad = ficha.poblacion / ficha.superficieKm2;
+const densidadGalicia = 91; // aprox.: 2,70 M hab. / 29.575 km²
+const campoFutbol = 0.00714; // km² dun campo de 105 × 68 m
+const campos = Math.round(ficha.superficieKm2 / campoFutbol);
+
+const capitulos = Object.entries(T.capitulos).map(([id, titulo]) => ({ id, t: titulo }));
+const pad = (i: number) => String(i).padStart(2, '0');
+
+const ticker = T.ticker({
+  pob: n(ficha.poblacion),
+  par: ficha.parroquias,
+  sup: n(ficha.superficieKm2),
+  maxV: n(maxHist.valor),
+  maxA: maxHist.anio,
+  cera: n(ceraPct, 0),
+  nf: fuentes.length,
+});
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AdministrativeArea',
+    name: 'Val do Dubra',
+    alternateName: 'Valle del Dubra',
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'A Coruña' },
+    geo: { '@type': 'GeoCoordinates', latitude: ficha.coordenadas.lat, longitude: ficha.coordenadas.lon },
+    identifier: `INE ${ficha.codigoINE}`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'Val do Dubra en datos',
+    description: T.datasetDesc,
+    inLanguage: lang,
+    spatialCoverage: 'Val do Dubra, A Coruña, Galicia, España',
+    dateModified: datos.meta.actualizado,
+    isAccessibleForFree: true,
+    distribution: [
+      { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: new URL(url('datos/val-do-dubra.json'), Astro.site).href },
+      { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: new URL(url('datos/poblacion.csv'), Astro.site).href },
+    ],
+  },
+];
+---
+<Base
+  title={T.titulo}
+  description={T.descricion(n(ficha.poblacion), fuentes.length)}
+  current="inicio"
+  jsonLd={jsonLd}
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <svg class="hero-river" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path class="main" d="M1180 -20 C 1120 120, 1260 180, 1150 300 S 980 420, 1060 540 S 1240 640, 1180 760" />
+      <path d="M1230 -20 C 1180 120, 1320 200, 1210 310 S 1040 440, 1120 560 S 1300 650, 1240 760" />
+      <path d="M1290 -20 C 1240 110, 1380 220, 1270 330 S 1100 460, 1180 580 S 1360 660, 1300 760" />
+    </svg>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker">{T.heroKicker}</p>
+        <h1 id="hero-title">
+          Val <span class="do">do</span> <span class="dubra">Dubra</span>
+        </h1>
+        <p class="lede">{T.heroLede}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#ficha">
+            {T.informate}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a class="btn btn-ghost" href={href('fuentes/')}>{T.verFontes(fuentes.length)}</a>
+        </div>
+      </div>
+      <aside class="hero-card fade" aria-label={T.heroCardAria}>
+        <dl>
+          <div><dt>{T.habitantes2025}</dt><dd class="num">{n(ficha.poblacion)}</dd></div>
+          <div><dt>{T.superficie}</dt><dd class="num">{n(ficha.superficieKm2)} <small>km²</small></dd></div>
+          <div><dt>{T.nParroquias}</dt><dd class="num">{ficha.parroquias}</dd></div>
+          <div><dt>{T.idadeMedia}</dt><dd class="num">{n(est.edadMedia, 1)} <small>{T.anos}</small></dd></div>
+        </dl>
+        <p class="card-foot">{T.cardFoot(ficha.codigoINE, ficha.capital)} <Refs ids={['ine-padron', 'ige-ficha']} /></p>
+      </aside>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[...ticker, ...ticker].map((x) => <span>{x}</span>)}
+    </div>
+  </div>
+
+  <div class="wrap doc">
+    <!-- ============ ÍNDICE ============ -->
+    <nav class="toc" aria-label={T.tocAria}>
+      <div>
+        <details open>
+          <summary>{T.indice}</summary>
+          <ol>
+            {capitulos.map((c, i) => <li><a href={`#${c.id}`}><span>{pad(i)}</span>{c.t}</a></li>)}
+          </ol>
+        </details>
+      </div>
+    </nav>
+
+    <div>
+      <!-- ============ 00 FICHA ============ -->
+      <Chapter id="ficha" num="00" kicker={T.ficha.kicker} title={T.capitulos.ficha} lede={T.ficha.lede}>
+        <div class="stats cols-4">
+          <Stat value={n(ficha.poblacion)} countTo={ficha.poblacion} label={T.ficha.habitantes} note={T.ficha.habitantesNota} />
+          <Stat value={n(ficha.superficieKm2)} countTo={ficha.superficieKm2} decimals={2} unit="km²" label={T.ficha.superficie}
+            note={T.ficha.superficieNota(n(ficha.superficieAlternativas[1].valor), n(ficha.superficieAlternativas[0].valor))} />
+          <Stat value={n(densidad, 1)} countTo={densidad} decimals={1} unit={T.ficha.densidadeUnid} label={T.ficha.densidade} note={`Galicia: ≈ ${densidadGalicia}`} />
+          <Stat value={String(ficha.parroquias)} label={T.nParroquias.toLowerCase()} note={`Capital: ${ficha.capital}`} />
+          <Stat value={n(ficha.altitudMaxima)} unit="m" label={T.ficha.altitude} note={T.ficha.fondoVal(n(ficha.altitudValles))} />
+          <Stat value={`≈ ${n(ficha.distanciaSantiagoKm, 1)}`} unit="km" label={T.ficha.distancia} note={T.ficha.calculoPropio} />
+          <Stat value={`${n(ficha.coordenadas.lat, 2)}° N`} label={`${n(Math.abs(ficha.coordenadas.lon), 2)}° ${T.ficha.oeste}`} note={T.ficha.coordenadas} />
+          <Stat value={ficha.codigoINE} label={T.ficha.codigo} note={T.ficha.cp(lista(ficha.codigosPostales))} />
+        </div>
+        <div class="grid-2 block">
+          <div class="prose">
+            <p class="dropcap">
+              <Fragment set:html={T.ficha.p1({ limites: lista(ficha.limites), alcalde: ficha.alcalde, partido: ficha.alcaldePartido })} /><Refs ids={['egu', 'wikipedia-en', 'concello-sede']} />
+            </p>
+            <p><Fragment set:html={T.ficha.p2} /><Refs ids={['toponhisp']} /></p>
+          </div>
+          <div class="callout">
+            <p set:html={T.ficha.comoLer({
+              exemplo: `<span class="refs"><a href="${href('fuentes/#ine-padron')}">1</a></span>`,
+              fontes: href('fuentes/'),
+              datos: href('datos/'),
+            })} />
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 01 TERRITORIO ============ -->
+      <Chapter id="territorio" num="01" kicker={T.territorio.kicker} title={T.territorio.titulo} lede={T.territorio.lede}>
+        <div class="grid-2 wide-left">
+          <div class="prose">
+            <p>{tr(datos.territorio.relieve)}<Refs ids={['egu']} /></p>
+            <p><Fragment set:html={T.territorio.p2} /><Refs ids={['egu', 'geocaching-picoto']} /></p>
+          </div>
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">{T.territorio.figTitulo}</div>
+              <div class="fig-sub">{T.territorio.figSub}</div>
+            </figcaption>
+            <HBars label={T.territorio.altitudesAria} items={datos.territorio.cotas.map((c) => ({ label: tr(c.nombre), value: c.altitud, display: `${n(c.altitud)} m` }))} max={600} />
+            <SourceLine ids={datos.territorio.cotas.map((c) => c.fuente)} />
+          </figure>
+        </div>
+
+        <div class="block">
+          <h3>{T.territorio.rios}</h3>
+          <div class="grid-cards">
+            {datos.territorio.rios.map((r) => (
+              <article class="card">
+                <span class="tag">{T.territorio.rio}</span>
+                <h3>{r.nombre}</h3>
+                <p>{tr(r.descripcion)}</p>
+              </article>
+            ))}
+          </div>
+          <SourceLine ids={['egu', 'toponhisp', 'paxinas-descubre']} />
+        </div>
+
+        <div class="block grid-2">
+          <div>
+            <h3 style="font-size:var(--step-2)">{T.territorio.veciños}</h3>
+            <p class="muted" style="margin:.5rem 0 1rem">{T.territorio.limitan}<Refs ids={['egu']} /></p>
+            <ul class="grid-cards" style="list-style:none;padding:0;grid-template-columns:repeat(auto-fill,minmax(9rem,1fr))">
+              {ficha.limites.map((l) => <li class="card" style="padding:.8rem 1rem"><strong>{l}</strong></li>)}
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size:var(--step-2)">{T.territorio.comoChegar}</h3>
+            <p style="margin-top:.5rem;color:var(--ink-2)">
+              {T.territorio.comoChegarP(n(ficha.distanciaSantiagoKm, 1))}<Refs ids={['concello-como-chegar']} />
+            </p>
+            <p style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap">
+              <a class="btn btn-ghost" href={`https://www.openstreetmap.org/?mlat=${ficha.coordenadas.lat}&mlon=${ficha.coordenadas.lon}#map=12/${ficha.coordenadas.lat}/${ficha.coordenadas.lon}`} rel="noopener">{T.territorio.mapa}</a>
+              <a class="btn btn-ghost" href={`https://www.aemet.es/${lang === 'en' ? 'en' : 'es'}/eltiempo/prediccion/municipios/val-do-dubra-bembibre-id15088`} rel="noopener">{T.territorio.tempo}</a>
+            </p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 02 POBLACIÓN ============ -->
+      <Chapter id="poblacion" num="02" kicker={T.poboacion.kicker} title={T.poboacion.titulo}
+        lede={T.poboacion.lede(n(maxHist.valor), n(ultimo.valor), n(perdidaDesdeMax, 0))}>
+        <figure class="figure fade">
+          <figcaption>
+            <div class="fig-title">{T.poboacion.fig1Titulo}</div>
+            <div class="fig-sub">{T.poboacion.fig1Sub}</div>
+          </figcaption>
+          <LineChart
+            title={T.poboacion.graf1({ v0: n(pob.historica[0].valor), a0: pob.historica[0].anio, maxV: n(maxHist.valor), maxA: maxHist.anio, vU: n(ultimo.valor), aU: ultimo.anio })}
+            points={pob.historica.map((p) => ({ x: p.anio, y: p.valor, note: p.nota && tr(p.nota) }))}
+            yMax={8000}
+            yTicks={[0, 2000, 4000, 6000, 8000]}
+            xTicks={[1887, 1950, 1981, 2001, 2025]}
+          />
+          <DataTable caption={T.poboacion.taboa1} head={T.poboacion.cab1} align={['l', 'r', 'l']}
+            rows={pob.historica.map((p) => [p.anio, n(p.valor), tr(fuente(p.fuente).organismo)])} />
+          <SourceLine ids={pob.historica.map((p) => p.fuente)} nota={T.poboacion.nota1981(n(7035))} />
+        </figure>
+
+        <div class="block">
+          <h3>{T.poboacion.etapas}</h3>
+          <p class="block-intro">{T.poboacion.etapasIntro}<Refs ids={['egu']} /></p>
+          <div class="grid-cards">
+            {pob.tendencias.map((x) => (
+              <article class="card">
+                <span class="tag">{tr(x.periodo)}</span>
+                <p class="stat-value" style={`color:${x.tasaAnual === null || x.tasaAnual > 0 ? 'var(--moss)' : 'var(--clay-ink)'}`}>
+                  {x.tasaAnual === null ? '↑' : pc(`${x.tasaAnual > 0 ? '+' : '−'}${n(Math.abs(x.tasaAnual), 2)}`)}
+                </p>
+                <p>{x.tasaAnual === null ? tr(x.causa) : `${T.poboacion.aoAno} · ${tr(x.causa)}`}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="block grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">{T.poboacion.seculo}</div>
+              <div class="fig-sub">{T.poboacion.padronSub}</div>
+            </figcaption>
+            <LineChart
+              title={T.poboacion.graf2(n(pob.padron[0].valor), n(ultimo.valor))}
+              points={pob.padron.map((p) => ({ x: p.anio, y: p.valor }))}
+              yMax={6000}
+              yTicks={[0, 2000, 4000, 6000]}
+              xTicks={[2000, 2010, 2020, 2025]}
+              height={300}
+              width={440}
+            />
+            <DataTable caption={T.poboacion.taboa2} head={T.poboacion.cab2} align={['l', 'r']} rows={pob.padron.map((p) => [p.anio, n(p.valor)])} />
+            <SourceLine ids={pob.padronFuentes} />
+          </figure>
+          <div>
+            <h3 style="font-size:var(--step-2)">{T.poboacion.quen}</h3>
+            <p class="muted" style="margin:.5rem 0 1.25rem">{T.poboacion.estrutura(n(est.total))}<Refs ids={est.fuentes} /></p>
+            <HBars label={T.poboacion.idadesAria}
+              items={est.edades.map((e, i) => ({ label: tr(e.grupo), value: e.valor, display: `${n(e.valor)} · ${pc(pct(e.valor, est.total))}`, alt: i === 2 }))} />
+            <div class="stats" style="margin-top:1.5rem">
+              <Stat value={n(est.edadMedia, 1)} unit={T.anos} label={T.poboacion.idadeMedia} />
+              <Stat value={pct(est.mujeres, est.total)} unit="%" label={T.poboacion.mulleres(n(est.mujeres))} />
+              <Stat value={n(est.indiceEnvejecimiento, 0)} label={T.poboacion.envellecemento} note={T.poboacion.envNota} />
+              <Stat value={n(est.extranjeros)} label={T.poboacion.estranxeiros(pct(est.extranjeros, est.total))} />
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>{T.poboacion.saldoTitulo(mn.anio)}</h3>
+          <div class="grid-2">
+            <div class="stats">
+              <Stat value={String(mn.nacimientos)} label={T.poboacion.nacementos} />
+              <Stat value={String(mn.defunciones)} label={T.poboacion.defuncions} />
+              <Stat value={`−${Math.abs(mn.saldo)}`} label={T.poboacion.saldo} />
+              <Stat value={n(mn.hijosPorMujer2023, 2)} label={T.poboacion.fillos} />
+            </div>
+            <p class="pull"><Fragment set:html={T.poboacion.cita(n(mn.defunciones / mn.nacimientos, 1))} /><cite>{T.poboacion.citaFonte(mn.anio, n(mn.tasaNatalidad2023, 2), n(mn.tasaMortalidad2023, 2))}</cite></p>
+          </div>
+        </div>
+
+        <div class="block grid-2">
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">{T.poboacion.bembibre}</h3>
+            <p><Fragment set:html={T.poboacion.bembibreP({
+              v0: n(bembibre0.valor), a0: bembibre0.anio, v1: n(bembibre1.valor), a1: bembibre1.anio,
+              crec: n(crecBembibre, 1), caida: n(Math.abs(caidaConcello), 1), peso: n(pesoBembibre, 0),
+            })} /><Refs ids={pob.nucleosFuentes} /></p>
+            <p class="muted small">{T.poboacion.bembibreNota}</p>
+          </div>
+          <figure class="figure">
+            <figcaption><div class="fig-title">{T.poboacion.bembibreFig}</div></figcaption>
+            <HBars label={T.poboacion.bembibreAria} items={bembibre.map((b) => ({ label: String(b.anio), value: b.valor }))} max={1300} />
+            <SourceLine ids={pob.nucleosFuentes} />
+          </figure>
+        </div>
+      </Chapter>
+
+      <!-- ============ 03 DIÁSPORA ============ -->
+      <Chapter id="diaspora" num="03" kicker={T.diaspora.kicker} title={T.diaspora.titulo} lede={T.diaspora.lede}>
+        <div class="grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">{T.diaspora.censo}</div>
+              <div class="fig-sub">{T.diaspora.censoSub(n(ce.total))}</div>
+            </figcaption>
+            <div class="waffle" role="img" aria-label={T.diaspora.gofreAria(n(100 - ceraPct, 0), n(ceraPct, 0))}>
+              {Array.from({ length: 100 }, (_, i) => <i class={i >= 100 - waffleB ? 'b' : undefined}></i>)}
+            </div>
+            <div class="legend">
+              <span><i style="background:var(--river)"></i>{T.diaspora.cer(n(ce.residentes))}</span>
+              <span><i style="background:var(--clay)"></i>{T.diaspora.cera(n(ce.residentesAusentes))}</span>
+            </div>
+            <SourceLine ids={ce.fuentes} nota={T.diaspora.nota2015(n(ce.total2015))} />
+          </figure>
+          <div>
+            <p class="pull"><Fragment set:html={T.diaspora.cita(n(ceraPct, 0))} /><cite>{T.diaspora.citaFonte}</cite></p>
+            <div class="stats" style="margin-top:2rem">
+              <Stat value={n(datos.emigracion.emigrantes2005)} label={T.diaspora.emig2005} note={T.diaspora.emigPosto(t.comun.ord(String(datos.emigracion.rankingGalicia2005)))} />
+              <Stat value={pc(datos.emigracion.porcentaje1986)} label={T.diaspora.emig1986(n(datos.emigracion.emigrantes1986))} />
+            </div>
+            <p style="margin-top:1.25rem;color:var(--ink-2)"><Fragment set:html={T.diaspora.destinos(datos.emigracion.destinos.map(tr).join(', '))} /><Refs ids={datos.emigracion.fuentes} /></p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 04 PARROQUIAS ============ -->
+      <Chapter id="parroquias" num="04" kicker={T.parroquias.kicker} title={T.parroquias.titulo} lede={T.parroquias.lede}>
+        <div class="grid-cards">
+          {datos.parroquias.map((p, i) => (
+            <article class="card parish">
+              <span class="idx" aria-hidden="true">{pad(i + 1)}</span>
+              <h3>{p.nombre}</h3>
+              {p.advocacion && <p class="adv">{p.advocacion}</p>}
+              <p>{tr(p.destacado)}</p>
+            </article>
+          ))}
+        </div>
+        <SourceLine ids={datos.parroquiasFuentes} nota={T.parroquias.nota} />
+      </Chapter>
+
+      <!-- ============ 05 HISTORIA ============ -->
+      <Chapter id="historia" num="05" kicker={T.historia.kicker} title={T.historia.titulo} lede={T.historia.lede}>
+        <ol class="timeline">
+          {datos.historia.map((h) => (
+            <li class="fade">
+              <div class="when">{tr(h.fecha)}</div>
+              <div>
+                <h3>{tr(h.titulo)}</h3>
+                <p>{tr(h.texto)}<Refs ids={h.fuentes} /></p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <div class="block grid-2">
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">{T.historia.nome}</h3>
+            <p><Fragment set:html={T.historia.nomeP} /><Refs ids={['toponhisp']} /></p>
+          </div>
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">{T.historia.escudo}</h3>
+            <p>{T.historia.escudoP}<Refs ids={['heraldry', 'boe-escudo-1981']} /></p>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 06 ECONOMÍA ============ -->
+      <Chapter id="economia" num="06" kicker={T.economia.kicker} title={T.economia.titulo} lede={tr(eco.texto)}>
+        <div class="stats cols-3">
+          <Stat value={n(renta23.bruta)} countTo={renta23.bruta} unit="€" label={T.economia.renda} note={T.economia.rendaNota(n(subidaRenta, 1))} />
+          <Stat value={n(renta23.disponible)} unit="€" label={T.economia.dispoñible} />
+          <Stat value={t.comun.ord(n(renta23.rankingGalicia!))} label={T.economia.posto} note={T.economia.postoNota(t.comun.ord(n(renta23.rankingEspana!)))} />
+          <Stat value={n(eco.afiliaciones.valor)} label={T.economia.afiliados} />
+          <Stat value={String(eco.paroRegistrado.valor)} label={T.economia.paro(eco.paroRegistrado.anio)} />
+          <Stat value={String(eco.empresas.valor)} label={T.economia.empresas} note={T.economia.empresasNota} />
+        </div>
+        <SourceLine ids={['aeat-irpf-2023', 'aeat-irpf-2022', 'ige-ficha', 'iberinform']} />
+
+        <div class="block grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">{T.economia.sectores}</div>
+              <div class="fig-sub">{T.economia.sectoresSub(tr(eco.empleoSectores.periodo))}</div>
+            </figcaption>
+            <HBars label={T.economia.sectoresAria} items={eco.empleoSectores.datos.map((d) => ({ label: tr(d.sector), value: d.valor }))} />
+            <SourceLine ids={[eco.empleoSectores.fuente]} nota={T.economia.sectoresNota} />
+          </figure>
+          <div class="prose">
+            <h3 style="font-size:var(--step-2)">{T.economia.cambio}</h3>
+            <p><Fragment set:html={T.economia.cambioP1({ prim: n(eco.empleo2001.primario, 1), act: n(eco.empleo2001.tasaActividad, 1), paro: n(eco.empleo2001.tasaParo, 1) })} /><Refs ids={['egu']} /></p>
+            <p>{T.economia.cambioP2(n(renta22.bruta), n(renta23.bruta))}<Refs ids={['oficina-economica', 'aeat-irpf-2022', 'aeat-irpf-2023']} /></p>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>{T.economia.escolas}</h3>
+          <div class="grid-2">
+            <figure class="figure">
+              <figcaption><div class="fig-title">{T.economia.alumnado(datos.educacion.anio)}</div></figcaption>
+              <HBars label={T.economia.alumnadoAria} items={datos.educacion.alumnado.map((a) => ({ label: tr(a.nivel), value: a.valor }))} />
+              <SourceLine ids={['ige-ficha']} />
+            </figure>
+            <div class="grid-cards" style="grid-template-columns:1fr">
+              {datos.educacion.centros.map((c) => (
+                <article class="card">
+                  <h3>{tr(c.nombre)}</h3>
+                  <p>{tr(c.descripcion)}<Refs ids={[c.fuente]} /></p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 07 POLÍTICA ============ -->
+      <Chapter id="politica" num="07" kicker={T.politica.kicker} title={T.politica.titulo} lede={T.politica.lede}>
+        <div class="grid-2">
+          <figure class="figure">
+            <figcaption>
+              <div class="fig-title">{T.politica.reparto}</div>
+              <div class="fig-sub">{T.politica.repartoSub(n(m23.votosValidos), n(m23.abstencion, 2))}</div>
+            </figcaption>
+            <Hemicycle title={T.politica.hemiciclo(conEscano.map((p) => `${p.siglas} ${p.concejales}`).join(', '))}
+              parties={conEscano.map((p) => ({ siglas: p.siglas, concejales: p.concejales, color: partyColor[p.siglas] }))} />
+            <div class="legend">
+              {conEscano.map((p) => <span><i style={`background:${partyColor[p.siglas]}`}></i>{p.siglas}: {p.concejales} ({pc(p.porcentaje!)})</span>)}
+            </div>
+            <SourceLine ids={m23.fuentes} />
+          </figure>
+          <div class="prose">
+            <p>{tr(m23.nota)}<Refs ids={['eldiario-28m', 'wikipedia-en']} /></p>
+            <p>{T.politica.competencias}<Refs ids={['concello-sede']} /></p>
+            <p class="small muted">{T.politica.semRepresentacion}<Refs ids={['infoelectoral', 'adiante-2023']} /></p>
+          </div>
+        </div>
+        <div class="block">
+          <h3>{T.politica.xerais}</h3>
+          <p class="block-intro">{T.politica.xeraisIntro}<Refs ids={pol.generalesFuentes} /></p>
+          <div class="grid-cards">
+            {(['PP', 'PSdeG-PSOE', 'BNG'] as const).map((p) => (
+              <article class="card">
+                <h3>{p}</h3>
+                <HBars compact label={T.politica.votoAria(p)} max={70}
+                  items={pol.generales.map((g, i) => ({ label: String(g.anio), value: g[p], display: pc(n(g[p], 1)), alt: i === 0 }))} />
+              </article>
+            ))}
+            <article class="card">
+              <h3>{T.politica.participacion}</h3>
+              <HBars compact label={T.politica.participacionAria} max={100}
+                items={pol.generales.map((g, i) => ({ label: String(g.anio), value: g.participacion, display: pc(n(g.participacion, 2)), alt: i === 0 }))} />
+            </article>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--clay)"></i>2019</span>
+            <span><i style="background:var(--river)"></i>2023</span>
+          </div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 08 PATRIMONIO ============ -->
+      <Chapter id="patrimonio" num="08" kicker={T.patrimonio.kicker} title={T.patrimonio.titulo} lede={T.patrimonio.lede}>
+        <div class="grid-cards">
+          {datos.patrimonio.map((p) => (
+            <article class="card">
+              <span class="tag">{tr(p.tipo)}</span>
+              <h3>{tr(p.nombre)}</h3>
+              <p>{tr(p.texto)}<Refs ids={p.fuentes} /></p>
+              {p.parroquia && <p class="meta">{T.patrimonio.parroquia}: {p.parroquia}</p>}
+            </article>
+          ))}
+        </div>
+        <div class="block">
+          <h3>{T.patrimonio.natureza}</h3>
+          <div class="grid-cards">
+            {datos.naturaleza.map((r) => (
+              <article class="card">
+                <span class="tag">{tr(r.tipo)}</span>
+                <h3>{tr(r.nombre)}</h3>
+                <p>{tr(r.texto)}<Refs ids={r.fuentes} /></p>
+                {('dificultad' in r && r.dificultad) && <p class="meta">{T.patrimonio.dificultade}: {tr(r.dificultad)}{r.distanciaKm ? ` · ${r.distanciaKm} km` : ''}</p>}
+              </article>
+            ))}
+          </div>
+          <p style="margin-top:1.25rem"><a class="btn btn-ghost" href="https://valdodubra.gal/rutas-de-sendeirismo/" rel="noopener">{T.patrimonio.rutas}</a></p>
+        </div>
+      </Chapter>
+
+      <!-- ============ 09 FIESTAS ============ -->
+      <Chapter id="fiestas" num="09" kicker={T.festas.kicker} title={T.festas.titulo} lede={T.festas.lede}>
+        <ol class="calendar">
+          {datos.fiestas.map((f) => (
+            <li>
+              <span class="mes">{tr(f.mes)}</span>
+              <h3>{tr(f.nombre)}</h3>
+              <p>{tr(f.texto)}<Refs ids={f.fuentes} /></p>
+            </li>
+          ))}
+        </ol>
+      </Chapter>
+
+      <!-- ============ 10 CURIOSIDADES ============ -->
+      <Chapter id="curiosidades" num="10" kicker={T.curiosidades.kicker} title={T.curiosidades.titulo} lede={T.curiosidades.lede}>
+        <div class="facts">
+          <div class="fact fade"><span class="big">{n(mayoresPorNino, 1)}</span><p>{T.curiosidades.maiores}<Refs ids={['ige-ficha']} /></p></div>
+          <div class="fact fade"><span class="big">1836</span><p><Fragment set:html={T.curiosidades.fundacion} /><Refs ids={['toponhisp']} /></p></div>
+          <div class="fact fade"><span class="big">{n(campos)}</span><p>{T.curiosidades.campos(n(ficha.superficieKm2))}</p></div>
+          <div class="fact fade"><span class="big">≈ 1/3</span><p>{T.curiosidades.densidade(n(densidad, 1), densidadGalicia)}</p></div>
+          <div class="fact fade"><span class="big">{n(2100)}+</span><p>{T.curiosidades.castro}<Refs ids={['paxinas-castelo']} /></p></div>
+          <div class="fact fade"><span class="big">3</span><p>{T.curiosidades.sartegos}<Refs ids={['paxinas-descubre']} /></p></div>
+          <div class="fact fade"><span class="big">≈ {n(4600)}</span><p>{T.curiosidades.volta}<Refs ids={['egu']} /></p></div>
+          <div class="fact fade"><span class="big">{pc(`+${n(subidaRenta, 0)}`)}</span><p>{T.curiosidades.renda}<Refs ids={['aeat-irpf-2022', 'aeat-irpf-2023']} /></p></div>
+          <div class="fact fade"><span class="big">30+</span><p>{T.curiosidades.cervexa}<Refs ids={['paxinas-fiestas']} /></p></div>
+        </div>
+      </Chapter>
+
+      <!-- ============ 11 FUENTES ============ -->
+      <Chapter id="fuentes" num="11" kicker={T.fontes.kicker} title={T.fontes.titulo} lede={T.fontes.lede(fuentes.length)}>
+        <div class="stats cols-3">
+          {Object.entries(fuentes.reduce<Record<string, number>>((acc, f) => ((acc[f.tipo] = (acc[f.tipo] ?? 0) + 1), acc), {}))
+            .sort((a, b) => b[1] - a[1])
+            .map(([tipo, c]) => <Stat value={String(c)} label={t.tipos[tipo] ?? tipo} />)}
+        </div>
+        <p style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
+          <a class="btn btn-primary" href={href('fuentes/')}>{T.fontes.catalogo}</a>
+          <a class="btn btn-ghost" href={href('datos/')}>{t.comun.descargar}</a>
+        </p>
+      </Chapter>
+    </div>
+  </div>
+</Base>

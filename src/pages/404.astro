@@ -1,12 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
-import { url } from '../lib/datos';
+import { href, useI18n } from '../i18n';
+import es from '../i18n/es';
+import en from '../i18n/en';
+
+// Só hai unha páxina 404 para todo o sitio: vai en galego, con atallos ao castelán e ao inglés.
+const { t } = useI18n(Astro.url);
+const T = t.erro;
 ---
-<Base title="Página no encontrada" description="Esta página no existe en Val do Dubra en datos.">
+<Base title={T.titulo} description={T.descricion} alternates={false}>
   <div class="wrap" style="padding-block:6rem;min-height:60vh">
-    <p class="kicker">Error 404</p>
-    <h1 style="font-size:var(--step-5);line-height:.9;margin-top:.5rem">Te perdiste<br /><em style="font-weight:300;color:var(--clay-ink)">en el valle</em></h1>
-    <p class="lede" style="margin-top:1.5rem">Esta página no existe. El río sigue su curso: vuelve al inicio.</p>
-    <p style="margin-top:2rem"><a class="btn btn-primary" href={url('')}>Volver al inicio</a></p>
+    <p class="kicker">{T.kicker}</p>
+    <h1 style="font-size:var(--step-5);line-height:.9;margin-top:.5rem">{T.h1a}<br /><em style="font-weight:300;color:var(--clay-ink)">{T.h1b}</em></h1>
+    <p class="lede" style="margin-top:1.5rem">{T.p}</p>
+    <p style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
+      <a class="btn btn-primary" href={href('', 'gl')}>{T.volver}</a>
+      <a class="btn btn-ghost" href={href('', 'es')} hreflang="es" lang="es">{es.erro.volver}</a>
+      <a class="btn btn-ghost" href={href('', 'en')} hreflang="en" lang="en">{en.erro.volver}</a>
+    </p>
   </div>
 </Base>

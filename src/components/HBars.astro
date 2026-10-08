@@ -1,7 +1,8 @@
 ---
-import { n } from '../lib/datos';
+import { useI18n } from '../i18n';
 interface Item { label: string; value: number; display?: string; alt?: boolean }
 interface Props { items: Item[]; max?: number; label: string; suffix?: string; compact?: boolean }
+const { n } = useI18n(Astro.url);
 const { items, max = Math.max(...items.map((i) => i.value)), label, suffix = '', compact = false } = Astro.props;
 ---
 <div class:list={["hbars reveal", { compact }]} role="list" aria-label={label}>
